@@ -31,3 +31,6 @@
 
 ### 取消本地仓库和远程仓库的关联
  * git remote rm origin
+
+### 克隆远程仓库到本地
+ * git clone + 远程仓库地址 

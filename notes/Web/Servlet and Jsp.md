@@ -1,65 +1,70 @@
-jspºÍxmlÖÐµÄÄÚÈÝ¸üÐÂ²»ÐèÒªÖØÆô·þÎñÆ÷
-servletºÍÀà¸üÐÂ¶¼ÐèÒªÖØÆô·þÎñÆ÷
+## IDEéƒ¨åˆ†
 
-/WEB-INFÏÂµÄÄÚÈÝ²»ÄÜÖ±½Ó·ÃÎÊ£¬·ñÔò404
+>**æ³¨æ„**
+ 
+- jspå’Œxmlä¸­çš„å†…å®¹æ›´æ–°ä¸éœ€è¦é‡å¯æœåŠ¡å™¨
+- servletå’Œç±»æ›´æ–°éƒ½éœ€è¦é‡å¯æœåŠ¡å™¨
+- /WEB-INFä¸‹çš„å†…å®¹ä¸èƒ½ç›´æŽ¥è®¿é—®ï¼Œå¦åˆ™404
+- mvc:resource å¤„ç†é™æ€èµ„æº locationå±žæ€§æ˜¯å·¥ç¨‹ä¸‹çš„ç›®å½•  mappingå±žæ€§æ˜¯æµè§ˆå™¨urlåœ°å€çš„æ˜ å°„
+locationå’Œmappingèµ„æºä½ç½®è¦ä¿æŒä¸€è‡´
 
-mvc:resource ´¦Àí¾²Ì¬×ÊÔ´ locationÊôÐÔÊÇ¹¤³ÌÏÂµÄÄ¿Â¼  mappingÊôÐÔÊÇä¯ÀÀÆ÷urlµØÖ·µÄÓ³Éä
-locationºÍmapping×ÊÔ´Î»ÖÃÒª±£³ÖÒ»ÖÂ
+> ###è·¯å¾„é—®é¢˜ webé¡¹ç›®çš„ç›¸å¯¹è·¯å¾„å’Œç»å¯¹è·¯å¾„
 
-<a href="download?filename=ext.txt">ÏÂÔØ</a>  hrefÇëÇóµÄ¿ØÖÆÆ÷µØÖ·Ç°²»ÄÜ¼Ó¡°/¡±
-
-Ò»¸öä¯ÀÀÆ÷Í¬Ê±¿ªÁ½¸ö·ÃÎÊ°Ù¶ÈÍøÒ³µÄ´°¿ÚÊÇ¼¸¸ösession
-´Ó¼ÆËã»úÍøÂç£º¿Í»§¶Ë½¨Á¢ÁËÁ½¸ö²»Í¬µÄsocket  £¨socket£ºÄ¿µÄÖ÷»ú+¶Ë¿ÚºÅ£¬ÕâÀï·¢ËÍÖ÷»úÒ»ÖÂ£¬Á½¸öä¯ÀÀÆ÷´°¿Ú¾ÍÊÇÁ½¸ö²»Í¬µÄÓÃ»§¶Ë¿ÚºÅ£©
-´ÓÃæÏò¶ÔÏó±à³Ì£ºsessionºÍcookie¶¼ÊÇ»á»°¸ú×Ù¼¼Êõ£¬Õâ¾ÍÊÇÎªÊ²Ã´Ö»ÒªµÇÂ¼ÁË°Ù¶È»òÕßÌÔ±¦Íø²»¹Ü´ò¿ª¶àÉÙ¸öä¯ÀÀÆ÷´°¿Ú¶¼ÊÇÍ¬Ò»¸öÕËºÅÔ­Òò
-Èç¹ûÒ»¸öwebÓ¦ÓÃ²»Ê¹ÓÃ»á»°¸ú×Ù¼¼Êõ£¬´ò¿ª¶àÉÙ¸ö´°¿Ú¾ÍÊÇ¶àÉÙ¸ösession
-
-
-springmvc×÷ÓÃÓò´«Öµ£ºÈç¹ûÓÃ²ÎÊý£¨request/respones/application/session´«Öµ  Êµ¼ÊÉÏÊÇ°Ñ¼üÖµ¶Ô´æ·ÅÔÚ×÷ÓÃÓòÖÐ£¬µ×²ãÔÙÍ¨¹ýÄ¬ÈÏµÄforwardµÄ×ª·¢·½Ê½°ÑÖµ´ø¸øÇëÇóµÄÁíÍâÒ»¸ö¿ØÖÆÆ÷»òÒ³Ãæ£©   ´«Öµ»¹¿ÉÒÔÍ¨¹ýÔÚ·½·¨µÄ²ÎÊýÖÐÊ¹ÓÃMap½Ó¿ÚµÈ£¬springmvcµ×²ã»áÊµÀý»¯Ò»¸ö¶ÔÏóÀ´´«Öµ
-ÔÚ×îÐÂµÄspringmvcÖÐ£¬springmvcÍÆ¼öÊ¹ÓÃmodelandviewÀ´´«Öµ
+åŠ "/"çš„éƒ½æ˜¯ç»å¯¹è·¯å¾„ï¼Œåªæœ‰`req.getRequestDispatcher("page")`
 
 
+ä¸€ä¸ªæµè§ˆå™¨åŒæ—¶å¼€ä¸¤ä¸ªè®¿é—®ç™¾åº¦ç½‘é¡µçš„çª—å£æ˜¯å‡ ä¸ªsession
+ä»Žè®¡ç®—æœºç½‘ç»œï¼šå®¢æˆ·ç«¯å»ºç«‹äº†ä¸¤ä¸ªä¸åŒçš„socket  ï¼ˆsocketï¼šç›®çš„ä¸»æœº+ç«¯å£å·ï¼Œè¿™é‡Œå‘é€ä¸»æœºä¸€è‡´ï¼Œä¸¤ä¸ªæµè§ˆå™¨çª—å£å°±æ˜¯ä¸¤ä¸ªä¸åŒçš„ç”¨æˆ·ç«¯å£å·ï¼‰
+ä»Žé¢å‘å¯¹è±¡ç¼–ç¨‹ï¼šsessionå’Œcookieéƒ½æ˜¯ä¼šè¯è·Ÿè¸ªæŠ€æœ¯ï¼Œè¿™å°±æ˜¯ä¸ºä»€ä¹ˆåªè¦ç™»å½•äº†ç™¾åº¦æˆ–è€…æ·˜å®ç½‘ä¸ç®¡æ‰“å¼€å¤šå°‘ä¸ªæµè§ˆå™¨çª—å£éƒ½æ˜¯åŒä¸€ä¸ªè´¦å·åŽŸå› 
+å¦‚æžœä¸€ä¸ªwebåº”ç”¨ä¸ä½¿ç”¨ä¼šè¯è·Ÿè¸ªæŠ€æœ¯ï¼Œæ‰“å¼€å¤šå°‘ä¸ªçª—å£å°±æ˜¯å¤šå°‘ä¸ªsession
 
-springmvcÎÄ¼þÉÏ´«³öÏÖ¿ÕÖ¸ÕëÒì³£ £¬ ¼ì²éÁËjspÒ³ÃæÖÐµÄinput-type²ÎÊýÃûºÍ¿ØÖÆÆ÷ÖÐ²ÎÊýµÄÃû×ÖÒ»ÑùÃ»ÎÊÌâ
-Ô­Òò¿ÉÄÜÊÇspringmvc.xmlÖÐbeanµÄÅäÖÃ   beanµÄid±ØÐëÊÇmultipartResolver£¬ÉÙÒ»¸ö´íÒ»¸ö×Ö·û¶¼»á±¨´í£¡
 
----
-> SpringMVCÀ¹½ØÆ÷  
-- springmvcÖÐÒ²²»ÔÊÐíÔÚ¶à¸ö¿ØÖÆÆ÷ÖÐ³öÏÖÏàÍ¬µÄÓ³ÉäµØÖ· ¼´requestMapping£¬·ñÔò³öÏÖThere is already 'XX' bean methodÒì³£
+springmvcä½œç”¨åŸŸä¼ å€¼ï¼šå¦‚æžœç”¨å‚æ•°ï¼ˆrequest/respones/application/sessionä¼ å€¼  å®žé™…ä¸Šæ˜¯æŠŠé”®å€¼å¯¹å­˜æ”¾åœ¨ä½œç”¨åŸŸä¸­ï¼Œåº•å±‚å†é€šè¿‡é»˜è®¤çš„forwardçš„è½¬å‘æ–¹å¼æŠŠå€¼å¸¦ç»™è¯·æ±‚çš„å¦å¤–ä¸€ä¸ªæŽ§åˆ¶å™¨æˆ–é¡µé¢ï¼‰   ä¼ å€¼è¿˜å¯ä»¥é€šè¿‡åœ¨æ–¹æ³•çš„å‚æ•°ä¸­ä½¿ç”¨MapæŽ¥å£ç­‰ï¼Œspringmvcåº•å±‚ä¼šå®žä¾‹åŒ–ä¸€ä¸ªå¯¹è±¡æ¥ä¼ å€¼
+åœ¨æœ€æ–°çš„springmvcä¸­ï¼ŒspringmvcæŽ¨èä½¿ç”¨modelandviewæ¥ä¼ å€¼
 
-- preHandle£ºÔÚ½øÈë¿ØÖÆÆ÷Ö®Ç°Ö´ÐÐ  Èô·µ»Øfalse£¬Ôò×èÖ¹½øÈë¿ØÖÆÆ÷¡£´Ë¹¦ÄÜÓÃÓÚÓÃ»§µÇÂ¼ÑéÖ¤µÄ¿ØÖÆ£¬ÈçÓÃ»§µÇÂ¼¾ÍÌø×ªµ½Ö÷Ò³£¬Î´µÇÂ¼µÄ»°¾ÍÈÃ¿ØÖÆÆ÷×èÖ¹½øÈë
-- postHandle£º//¿ØÖÆÆ÷Ö´ÐÐÍê³É£¬½øÈëµ½jspÖ®Ç°Ö´ÐÐ   	ÓÃÓÚÈÕÖ¾¼ÇÂ¼£¬Ãô¸Ð´ÊÓï¹ýÂË
 
-- afterCompletion£º//jspÖ´ÐÐÍê³ÉºóÖ´ÐÐ  ÓÃÓÚ´íÎóÈÕÖ¾ÊÕ¼¯
 
+springmvcæ–‡ä»¶ä¸Šä¼ å‡ºçŽ°ç©ºæŒ‡é’ˆå¼‚å¸¸ ï¼Œ æ£€æŸ¥äº†jspé¡µé¢ä¸­çš„input-typeå‚æ•°åå’ŒæŽ§åˆ¶å™¨ä¸­å‚æ•°çš„åå­—ä¸€æ ·æ²¡é—®é¢˜
+åŽŸå› å¯èƒ½æ˜¯springmvc.xmlä¸­beançš„é…ç½®   beançš„idå¿…é¡»æ˜¯multipartResolverï¼Œå°‘ä¸€ä¸ªé”™ä¸€ä¸ªå­—ç¬¦éƒ½ä¼šæŠ¥é”™ï¼
 
 ---
-> Filter¹ýÂËÆ÷
+> SpringMVCæ‹¦æˆªå™¨  
+- springmvcä¸­ä¹Ÿä¸å…è®¸åœ¨å¤šä¸ªæŽ§åˆ¶å™¨ä¸­å‡ºçŽ°ç›¸åŒçš„æ˜ å°„åœ°å€ å³requestMappingï¼Œå¦åˆ™å‡ºçŽ°There is already 'XX' bean methodå¼‚å¸¸
 
-- ÔÚdoFilter£¨£©·½·¨ÖÐ£¬chain.doFilter()Ç°µÄÒ»°ãÊÇ¶ÔrequestÖ´ÐÐµÄ¹ýÂË²Ù×÷£¬chain.doFilterºóÃæµÄ´úÂëÒ»°ãÊÇ¶ÔresponseÖ´ÐÐµÄ²Ù×÷
-Ò²¾ÍÊÇËµweb.xmlÖÐ¼àÌýÆ÷ÅäÖÃÔÚ¹ýÂËÆ÷Ö®Ç°£¬¹ýÂËÆ÷ÅäÖÃÔÚservletÖ®Ç°£¬·ñÔò»á³ö´í¡£
+- preHandleï¼šåœ¨è¿›å…¥æŽ§åˆ¶å™¨ä¹‹å‰æ‰§è¡Œ  è‹¥è¿”å›žfalseï¼Œåˆ™é˜»æ­¢è¿›å…¥æŽ§åˆ¶å™¨ã€‚æ­¤åŠŸèƒ½ç”¨äºŽç”¨æˆ·ç™»å½•éªŒè¯çš„æŽ§åˆ¶ï¼Œå¦‚ç”¨æˆ·ç™»å½•å°±è·³è½¬åˆ°ä¸»é¡µï¼Œæœªç™»å½•çš„è¯å°±è®©æŽ§åˆ¶å™¨é˜»æ­¢è¿›å…¥
+- postHandleï¼š//æŽ§åˆ¶å™¨æ‰§è¡Œå®Œæˆï¼Œè¿›å…¥åˆ°jspä¹‹å‰æ‰§è¡Œ   	ç”¨äºŽæ—¥å¿—è®°å½•ï¼Œæ•æ„Ÿè¯è¯­è¿‡æ»¤
+
+- afterCompletionï¼š//jspæ‰§è¡Œå®ŒæˆåŽæ‰§è¡Œ  ç”¨äºŽé”™è¯¯æ—¥å¿—æ”¶é›†
 
 
 ---
-> HTTP GET  POST·½·¨
-GETÊÇÃÝµÈµÄ POST²»ÊÇÃÝµÈµÄ£¬ÒâÎ¶×ÅGET¿ÉÒÔ¶à´ÎÖØ¸´Ìá½»£¬¶øPOSTÃ¿´ÎÌá½»¾Í¶¼ÓÐ¿ÉÄÜÊ¹·þÎñÆ÷ÉÏµÄÊý¾Ý·¢Éú±ä»¯£¬ÒªÌØ±ðÐ¡ÐÄ
-µ«ÊÇÄãÈÔÈ»¿ÉÒÔÔÚdoget·½·¨ÖÐÓÃÀ´¸üÐÂÊÐ¾Ö£¬µ«Çë²»ÒªÄÇÃ´×ö£¬ÒòÎªÕâÊÇÒ»¸öÔã¸âµÄ×ö·¨¡£Òª×¢ÒâµÄÊÇHTTP GETºÍServletÖÐµÄdoGet£¨£©Çø±ð
+> Filterè¿‡æ»¤å™¨
+
+- åœ¨doFilterï¼ˆï¼‰æ–¹æ³•ä¸­ï¼Œchain.doFilter()å‰çš„ä¸€èˆ¬æ˜¯å¯¹requestæ‰§è¡Œçš„è¿‡æ»¤æ“ä½œï¼Œchain.doFilteråŽé¢çš„ä»£ç ä¸€èˆ¬æ˜¯å¯¹responseæ‰§è¡Œçš„æ“ä½œ
+ä¹Ÿå°±æ˜¯è¯´web.xmlä¸­ç›‘å¬å™¨é…ç½®åœ¨è¿‡æ»¤å™¨ä¹‹å‰ï¼Œè¿‡æ»¤å™¨é…ç½®åœ¨servletä¹‹å‰ï¼Œå¦åˆ™ä¼šå‡ºé”™ã€‚
+
+
+---
+> HTTP GET  POSTæ–¹æ³•
+GETæ˜¯å¹‚ç­‰çš„ POSTä¸æ˜¯å¹‚ç­‰çš„ï¼Œæ„å‘³ç€GETå¯ä»¥å¤šæ¬¡é‡å¤æäº¤ï¼Œè€ŒPOSTæ¯æ¬¡æäº¤å°±éƒ½æœ‰å¯èƒ½ä½¿æœåŠ¡å™¨ä¸Šçš„æ•°æ®å‘ç”Ÿå˜åŒ–ï¼Œè¦ç‰¹åˆ«å°å¿ƒ
+ä½†æ˜¯ä½ ä»ç„¶å¯ä»¥åœ¨dogetæ–¹æ³•ä¸­ç”¨æ¥æ›´æ–°å¸‚å±€ï¼Œä½†è¯·ä¸è¦é‚£ä¹ˆåšï¼Œå› ä¸ºè¿™æ˜¯ä¸€ä¸ªç³Ÿç³•çš„åšæ³•ã€‚è¦æ³¨æ„çš„æ˜¯HTTP GETå’ŒServletä¸­çš„doGetï¼ˆï¼‰åŒºåˆ«
 
 --- 
 
-ÏìÓ¦Ò»µ©Ìá½»£¨sendRedirect£¬write,flush£©£¬¾ÍÒâÎ¶×ÅÏìÓ¦ÒÑ¾­½áÊøÁË£¬¾Í²»ÄÜÔÙ×ª·¢ÇëÇó
-Í¬ÑùµÄÈç¹û°ÑÇëÇó×ª·¢µ½±ðµÄjsp»òservlet£¬¾Í²»ÄÜ×Ô¼ºÔÚ·¢ËÍÏìÓ¦ÁË£¬ËùÒÔservletRequestµ÷ÓÃÁËgetRequestDispatcher.forward¾Í²»ÄÜ·¢ËÍ×Ô¼ºµÄÏìÓ¦
+å“åº”ä¸€æ—¦æäº¤ï¼ˆsendRedirectï¼Œwrite,flushï¼‰ï¼Œå°±æ„å‘³ç€å“åº”å·²ç»ç»“æŸäº†ï¼Œå°±ä¸èƒ½å†è½¬å‘è¯·æ±‚
+åŒæ ·çš„å¦‚æžœæŠŠè¯·æ±‚è½¬å‘åˆ°åˆ«çš„jspæˆ–servletï¼Œå°±ä¸èƒ½è‡ªå·±åœ¨å‘é€å“åº”äº†ï¼Œæ‰€ä»¥servletRequestè°ƒç”¨äº†getRequestDispatcher.forwardå°±ä¸èƒ½å‘é€è‡ªå·±çš„å“åº”
 
 
 --- 
-ELºÍ¶¨ÖÆ±êÇ©¿ÉÒÔ½â¾ö´óÁ¿µÄscriptlet´úÂëÔÚJSPÒ³ÃæÖÐµÄÎÊÌâ
+ELå’Œå®šåˆ¶æ ‡ç­¾å¯ä»¥è§£å†³å¤§é‡çš„scriptletä»£ç åœ¨JSPé¡µé¢ä¸­çš„é—®é¢˜
 
-EL±í´ïÊ½ÖÐµÄ[ ]ÊÇ ÊôÐÔbean/Map/List/Êý×éµÄÐÔÖÊ£¬Èçperson¡¾¡°name¡±¡¿¾ÍÊÇpersonÊôÐÔµÄÐÔÖÊname£¬Õû¸ö±í´ïÊ½${person["name"]}µÄÒâË¼¾ÍÊÇÈ¡personÊôÐÔµÄÐÔÖÊname£¬²¢°ÑnameÐÔÖÊÊä³ö
+ELè¡¨è¾¾å¼ä¸­çš„[ ]æ˜¯ å±žæ€§bean/Map/List/æ•°ç»„çš„æ€§è´¨ï¼Œå¦‚personã€â€œnameâ€ã€‘å°±æ˜¯personå±žæ€§çš„æ€§è´¨nameï¼Œæ•´ä¸ªè¡¨è¾¾å¼${person["name"]}çš„æ„æ€å°±æ˜¯å–personå±žæ€§çš„æ€§è´¨nameï¼Œå¹¶æŠŠnameæ€§è´¨è¾“å‡º
 
 
-×÷ÓÃÓò¶ÔÏóÊÇÒ»¸öÓ³Éä£¨Map£©£¬ÈçpageScope¶ÔÏó£¬µ«pageContext²»ÊÇÓ³Éä£¬¿ÉÒÔ°ÑpageContext¶ÔÏó¿´³ÉÊÇÒ»¸öbean
-ÎªÊ²Ã´ÒªÊ¹ÓÃ×÷ÓÃÓò¶ÔÏó£¿ ×÷ÓÃÓò¶ÔÏó³ýÁË¿ÉÒÔÖ¸¶¨´ÓÖ¸¶¨×÷ÓÃÓòÈ¡ÊôÐÔ£¬±ÜÃâÃüÃû³åÍ»ÒÔÍâ£¬»¹¿ÉÒÔ½â¾öÊôÐÔÃû²»×ñ´ÓJAVAÃüÃû¹æ·¶µÄÎÊÌâ¡£
-³ýÁËÊôÐÔÃû¿ÉÒÔ²»×ñ´ÓJavaÃüÃû¹æ·¶ÒÔÍâ£¬ÐÔÖÊÃûÒ²¿ÉÄÜ²»×ñ´ÓjavaÃüÃû¹æ·¶
+ä½œç”¨åŸŸå¯¹è±¡æ˜¯ä¸€ä¸ªæ˜ å°„ï¼ˆMapï¼‰ï¼Œå¦‚pageScopeå¯¹è±¡ï¼Œä½†pageContextä¸æ˜¯æ˜ å°„ï¼Œå¯ä»¥æŠŠpageContextå¯¹è±¡çœ‹æˆæ˜¯ä¸€ä¸ªbean
+ä¸ºä»€ä¹ˆè¦ä½¿ç”¨ä½œç”¨åŸŸå¯¹è±¡ï¼Ÿ ä½œç”¨åŸŸå¯¹è±¡é™¤äº†å¯ä»¥æŒ‡å®šä»ŽæŒ‡å®šä½œç”¨åŸŸå–å±žæ€§ï¼Œé¿å…å‘½åå†²çªä»¥å¤–ï¼Œè¿˜å¯ä»¥è§£å†³å±žæ€§åä¸éµä»ŽJAVAå‘½åè§„èŒƒçš„é—®é¢˜ã€‚
+é™¤äº†å±žæ€§åå¯ä»¥ä¸éµä»ŽJavaå‘½åè§„èŒƒä»¥å¤–ï¼Œæ€§è´¨åä¹Ÿå¯èƒ½ä¸éµä»Žjavaå‘½åè§„èŒƒ
 
-ELµÄ×÷ÓÃ£º
-»ñµÃÊôÐÔÖµ£¬ÐÔÖÊÖµ£¬µ÷ÓÃjavaº¯Êý
+ELçš„ä½œç”¨ï¼š
+èŽ·å¾—å±žæ€§å€¼ï¼Œæ€§è´¨å€¼ï¼Œè°ƒç”¨javaå‡½æ•°
 

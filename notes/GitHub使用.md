@@ -16,8 +16,7 @@
  
 
 ### 同步到本地仓库
- * 先查看工作修改后的状态 ： <br>
-   git status
+ * 先查看工作修改后的状态 ：git status
  * git add <文件名>
  * git commit -m "此处添加描述"
  

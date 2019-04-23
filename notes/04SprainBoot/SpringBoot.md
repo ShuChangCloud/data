@@ -45,3 +45,11 @@ logger.info("info");
 因此，在阿里的开发手册上才有这么一条
 
 强制：应用中不可直接使用日志系统（log4j、logback）中的 API ，而应依赖使用日志框架 SLF4J 中的 API 。使用门面模式的日志框架，有利于维护和各个类的日志处理方式的统一。
+
+
+
+### 四 静态资源的访问
+
+1. springboot项目是依赖于maven的.
+2. 用spring向导创建springboot项目时,src\main\目录下有java和resources这两个目录,这两个目录都是类路径下的目录,再编译完后会合并到classes目录下.![root](G:\data\notes\04SprainBoot\root.png)
+

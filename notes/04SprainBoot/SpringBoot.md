@@ -51,5 +51,22 @@ logger.info("info");
 ### 四 静态资源的访问
 
 1. springboot项目是依赖于maven的.
+
 2. 用spring向导创建springboot项目时,src\main\目录下有java和resources这两个目录,这两个目录都是类路径下的目录,再编译完后会合并到classes目录下.![root](G:\data\notes\04SprainBoot\root.png)
+
+3. 当**外部映射路径(浏览器请求资源的地址)** 没有控制器处理时,springboot会按照静态资源匹配规则去寻找对应的资源.
+
+   匹配规则如下
+
+   ```java
+   "classpath:/META‐INF/resources/",
+   "classpath:/resources/",
+   "classpath:/static/",
+   "classpath:/public/"
+   "/"：当前项目的根路径   //springboot 2.x以上已经不行了
+   ```
+
+   4.thymeleaf表达式中的[ ]是 属性bean/Map/List/数组的性质
+
+   ​
 

@@ -7,21 +7,29 @@
 ### 一  AOP
 
 - 基于schema-base实现的aop，无论是什么类型的通知，都必须实现接口     
+
 - 基于aspectj的方式，对通知类的要求没有那么严格，也就是说，在一个切面类中可以写任何的方法，而且不必继承任何接口<br>但是aspect对配置文件的要求非常高，必须指定通知在哪个切面类中，还必须指定是类中的哪个方法
+
 - 出了异常就不会执行后置通知。
+
 - aop一般应用于service层中，service中的方法出现异常不应该处理，必须抛出，否则spring aop就无调用异常通知，因为异常已经被service中的方法try catch过了   
+
 - aspectj中的after与after-returning区别： 
-   ​     
+   
+   ```java
    //无论是否发生异常 这个方法都会被执行
    	public void  after(){
    	    System.out.println("执行后置通知");
    	}
-   	
-   	//发生异常时，该方法不会执行
-   	public void afterReturning(){``
-   	    System.out.println("执行afterRunning");
-   	}
-
+   ```
+   
+   ```
+   //发生异常时，该方法不会执行
+public void afterReturning(){``
+       System.out.println("执行afterRunning");
+   }
+   ```
+   
 - JDK动态代理也是基于接口的，即只能对实际对象所实现的功能接口中的方法进行代理。
 
 **注意：使用注解来配置切面只适合个别方法，当大面积的方法都需要被代理时，切面类中的方法上的注解就无法复用了**
@@ -32,9 +40,7 @@
 - 自动装配是反射机制实现的。
 - 以来注入式通过setter或构造器注入的
 
-
-
-###二  关于依赖注入(装配与注入)
+### 二  关于依赖注入(装配与注入)
 
 #### 2.1 装配方式
 
@@ -42,7 +48,7 @@
 * JavaConfig
 * XML装配
 
-####2.2注意事项
+#### 2.2注意事项
 
 * P域和C域无法装配集和 但是导入util命名空间.就可以使用util-list功能装配集合了.
 
@@ -106,9 +112,8 @@ public class DataSourceConfig{
   </beans>
   ```
 
-  
 
-####3.2条件化的bean
+#### 3.2条件化的bean
 
 * **@Conditional**注解可以用在**@bean**注解上，就表示满足条件才创建bean，否则忽略这个bean。
 
@@ -177,7 +182,7 @@ public class StoreService{
 
 spring并不会将实际的shoppingcar注入到service实例中，spring会注入一个到shoppingcar bean的代理。
 
-####3.4 Environment类
+#### 3.4 Environment类
 
 Environment提供了与属性和环境有关的内容，以下是重要的方法。
 

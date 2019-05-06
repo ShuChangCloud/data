@@ -15,17 +15,17 @@
 - aop一般应用于service层中，service中的方法出现异常不应该处理，必须抛出，否则spring aop就无调用异常通知，因为异常已经被service中的方法try catch过了   
 
 - aspectj中的after与after-returning区别： 
-   
+  
    ```java
    //无论是否发生异常 这个方法都会被执行
-   	public void  after(){
-   	    System.out.println("执行后置通知");
-   	}
+   public void  after(){
+       System.out.println("执行后置通知");
+   }
    ```
    
-   ```
+   ```java
    //发生异常时，该方法不会执行
-public void afterReturning(){``
+public void afterReturning(){
        System.out.println("执行afterRunning");
    }
    ```
@@ -40,13 +40,17 @@ public void afterReturning(){``
 - 自动装配是反射机制实现的。
 - 以来注入式通过setter或构造器注入的
 
-### 二  关于依赖注入(装配与注入)
 
-#### 2.1 装配方式
+
+### 二 关于依赖注入(装配与注入)
+
+#### 2.1装配方式
 
 * 自动化装配
 * JavaConfig
 * XML装配
+
+
 
 #### 2.2注意事项
 
@@ -69,6 +73,8 @@ public void afterReturning(){``
 同理集合中也可以是bean,但是此时把**\<value>**要换成**\<ref bean="apple">**
 
 * 构造器注入实现强制依赖,setter注入实现可选依赖.
+
+
 
 ### 三  高级装配
 

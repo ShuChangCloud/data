@@ -62,11 +62,9 @@
 
 同理集合中也可以是bean,但是此时把**\<value>**要换成**\<ref bean="apple">**
 
-
-
 * 构造器注入实现强制依赖,setter注入实现可选依赖.
 
-### 三  高级装备
+### 三  高级装配
 
 #### 3.1 环境与profile
 
@@ -108,6 +106,124 @@ public class DataSourceConfig{
   </beans>
   ```
 
-  ​
+  
 
 ####3.2条件化的bean
+
+* **@Conditional**注解可以用在**@bean**注解上，就表示满足条件才创建bean，否则忽略这个bean。
+
+* **@Primary**可以与**@Conditiona**注解一起使用或者与**@Bean**一起使用，当自动装配存在歧义性的时候可以解决此冲突，@Primary表示将bean声明为首选的（首选bean）
+
+  ```java
+  @Component
+  @Primary		//有多个bean同时满足了fruit
+  public class Origin extends Fruit {
+  ....
+  }
+  ```
+
+若使用xml配置的话，则直接在bean后面加上属性primary=true即可。如果一个类型的bean（fruit）有多个@primary注解同时存在，那也会有歧义问题，这也就没有任何意义了。
+
+* 使用面向特性的限定符注解**@Qualifier**指定装配具体的bean
+
+  ```java
+  @AutoWired
+  @Qualifier("origin")
+  public void setFruit(){}
+  ```
+
+  但是，当多个bean具有相同的特性，此时在按照特性注入也会产生歧义，但是同一个bean可以同时添加多个Qualifier注解，来解决此问题。
+
+  在使用的时候：
+
+  ```java
+  @AutoWired	//这个bean表示是甜的origin
+  @Qualifier("origin")		//多个相同注解在一个类或方法需要java8以上的版本才能支持，但恰码头是此注解上加了@repeatable 所以次数也是不可取的
+  @Qualifier("dessert")
+  public void setFruit(){}
+  ```
+
+  也可以使用**自定义注解**来替代**@Qualifier注解** ,如下自定义了一个@Dessert注解来表示bean的特性
+
+  ```java
+  @Qualifier("dessert")	//这里实际上还是使用了@Qualifier注解
+  public @interface Dessert {}
+  ```
+
+#### 3.3 bean的作用域
+
+##### 3.3.1bean的作用域：
+
+* single
+* prototype
+* session
+* request
+
+后面两个似乎用处比较小，但是在有的情况下不可替代，如购物车作用域可以是session。如果是single那么所有用户的购物都放在一个购物车里，这不合理。如果是prototype，当一个用户在此处生成一个购物车，在点击别的页面买的商品又生成一个购物车，这似乎也不合理。
+
+**作用域冲突**
+
+```java
+@Service
+public class StoreService{
+    @Autowired
+    private ShoppingCar shoppingCar;
+}
+```
+
+在一个web应用中storeservice是单例的，而购物车shoppingcar是session级别的。此时需要解决作用域冲突的问题。shoppingCar一开是空的直到某个用户进入系统后才生成一个ShoppingCar的实例（session）。另外系统中有许多个shoppingcar的实例，我们并不能让某个特定的shoppingcar注入到storeservice中。
+
+**spring是如何解决的：**
+
+spring并不会将实际的shoppingcar注入到service实例中，spring会注入一个到shoppingcar bean的代理。
+
+####3.4 Environment类
+
+Environment提供了与属性和环境有关的内容，以下是重要的方法。
+
+*  T env.getProperty(string key)
+* String[] getActiveProfile()
+* boolean acceptsProfile(String... profiles)  如果env支持指定的profile的话，返回true。
+
+#### 3.5 运行时注入 SPEL
+
+SPEL与属性占位符的区别
+
+SPEL: 形如#{ ...}
+
+属性占位符：形如 ${ ...}
+
+##### 3.5.1 **使用SPEL可以做什么：**
+
+* 调用方法和访问对象的属性
+* 通过bean的id来引用bean
+* 对值进行算术运算
+* 正则表达式匹配
+* 集合操作
+
+
+
+##### 3.5.2 常用实例
+
+```java
+#{fruit.color} //获取水果id为fruit的颜色属性
+#{fruit.getPrice()} //调用对象的方法
+#{fruit.color.toUpperCase（）}  //对获取的值进行方法调用的追加操作
+#{fruit.color?.toUpperCase（）}  // ?.能在访问右边的内容之前对该操作符左边的内容判空，如果为空则右边就不会被访问到，此时表达式的值就是null
+#{T(java.lang.Math).PI}  //T()的运算结果是一个Class对象，T()的真正威力在于可以调用类的静态方法和静态属性，括号中是全限定类名。
+#{2 * T(java.lang.Math).PI *circle.radius} //使用SPEL进行表达式运算
+#{'math' == 'since'} //使用SPEL做逻辑运算，此处可替换为 #{'math'  eq 'since' },返回值是boolan
+#{100>90?true:false} //使用SPEL做三元运算
+#{fruit ?: 'orange'}  // ?:判断是否为null值，此处若fruit为null，则返回'orange'
+#{people.emaul  mathches '[a-zA-Z0-9]'}  //SPEL表达式正则匹配
+
+
+/*--------以下是与集合操作有关的------------*/
+#{store.fruits[4].price} //商店属性的fruits集合中第五个水果的价格
+#{store.fruits[T(java.lang.Math).random()*store.fruits.size].price}  //同上，从fruits集合中随机取出一个水果，查看价格
+#{'this is a test'[3]}  //获取字符串的第四个字符
+#{store.fruits.?[price>10]} //查询fruits集合中价格大于10的水果   .?提供了过滤查询集合的效果
+#{store.fruits.![title]}  //映射生成一个新的集合，这个集合是每个fruit的价格  .!映射结果集
+
+```
+

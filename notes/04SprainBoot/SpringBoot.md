@@ -6,10 +6,6 @@
 
 
 
-
-
-
-
 ### 二 自动配置 AutoConfiguration
 
 ```java
@@ -19,7 +15,7 @@
 @ConditionalOnClass(CharacterEncodingFilter.class)
 @ConditionalOnProperty(prefix = "spring.http.encoding", value = "enabled",
 		matchIfMissing = true)
-public class HttpEncodingAutoConfiguration {
+public class HttpEncodingAutoConfiguration {}
 ```
 
 
@@ -68,5 +64,5 @@ logger.info("info");
 
    4.thymeleaf表达式中的[ ]是 属性bean/Map/List/数组的性质
 
-   ​
+   
 

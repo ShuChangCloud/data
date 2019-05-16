@@ -2,7 +2,30 @@
 
 ### 一 常见注解
 
-**@ConfigurationProperties** 告诉springboot将配置文件里面值取出来关联到改类的属性上,前提是该类必须交给spring容器管理,所以同事需要**@Component** 注解配合使用
+**@ConfigurationProperties** 告诉springboot将配置文件里面值取出来关联到该类的属性上,前提是该类必须交给spring容器管理,所以同时需要**@Component** 注解配合使用
+
+* ```java
+  //导入容器或配置文件中的属性到当前类中,常常和@PropertySource一起使用
+  @ConfigurationProperties(prefix = "author")  
+  @PropertySource("classpath:author.properties") 
+  public class Author {
+      private String name;
+      private String sex;
+      private  int age;
+  }
+  ```
+
+* ```java
+  @PropertySource("classpath:author.properties") //加载指定配置文件到容器
+  ```
+
+* ```java
+  @ImportResource(locations = "classpath:beans.xml")		//导入指定配置文件或类到当前类或配置文件中
+  ```
+
+> **注意:**  把@PropertySource和@ImportResource写反会抛出XML解析异常的错误        
+
+
 
 
 
@@ -62,7 +85,16 @@ logger.info("info");
    "/"：当前项目的根路径   //springboot 2.x以上已经不行了
    ```
 
-   4.thymeleaf表达式中的[ ]是 属性bean/Map/List/数组的性质
+   ```java
+   private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
+   	"classpath:/META-INF/resources/", 
+       "classpath:/resources/",
+   	"classpath:/static/", 
+       "classpath:/public/" };  //此源码来自springboot2.x
+   ```
 
    
+
+   4.thymeleaf表达式中的[ ]是 属性bean/Map/List/数组的性质
+
 

@@ -6,6 +6,8 @@
 
 ### 一  AOP
 
+#### 1.1 概念
+
 - 基于schema-base实现的aop，无论是什么类型的通知，都必须实现接口     
 
 - 基于aspectj的方式，对通知类的要求没有那么严格，也就是说，在一个切面类中可以写任何的方法，而且不必继承任何接口  
@@ -54,7 +56,222 @@
 - 自动装配是反射机制实现的。
 - 以来注入式通过setter或构造器注入的
 
+#### 1.2Aop的三种实现方式
 
+##### 1.2.1 基于javaConfig的配置
+
+**具体的业务类**
+
+```java
+@Service
+public class PerformanceService {
+
+    public void performanceSingSong(){
+        System.out.println("唱一首歌");
+    }
+    public void performanceDance(){
+        System.out.println("跳一支舞");
+    }
+}
+
+```
+
+**Aspect切面类LoggerAspect**
+
+```java
+@Aspect
+public class LoggerAspect {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Before("execution(* com.xmcc.aop.PerformanceService.performanceDance(..))")
+    public void myBefore(){
+        logger.debug("前置通知");
+    }
+}
+```
+
+这里的切面类只是简单的做了一个日志记录. 切面包含切点和通知,简单的说切面就是决定了是**"什么","何时","何处"** 
+
+**java配置类MyAopConfig** 
+
+```java
+@EnableAspectJAutoProxy		//开启切面自动代理 1
+@Configuration				//声明配置类 2
+@ComponentScan				// 扫描包,此步骤根据情况省略    3
+public class MyAopConfig {
+
+    @Bean	//4   步骤1有效,此步骤才能生效,LoggerAspect类的定义中必须在类上标注@Aspect注解
+    public LoggerAspect loggerAspect(){
+        return new LoggerAspect();
+    }
+}
+```
+
+
+
+##### 1.2.2 基于xml和业务注解的混合配置
+
+**具体的业务类**
+
+```java
+@Service
+public class PerformanceService {
+
+    public void performanceSingSong(){
+        System.out.println("唱一首歌");
+    }
+    public void performanceDance(){
+        System.out.println("跳一支舞");
+    }
+}
+```
+
+这里不改变具体的业务类,**@Service**可以在xml中声明,也可以用注解.
+
+**xml配置文件**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--启用注解扫描,非必须,根据情况而定-->
+    <context:component-scan base-package="com.xmcc.aop"></context:component-scan>
+    
+    <!--开启自动代理, proxy-target-class="false"基于jdk的代理,如果没有接口,则选true-->
+    <aop:aspectj-autoproxy proxy-target-class="false"></aop:aspectj-autoproxy>
+</beans>
+```
+
+**Aspect切面类LoggerAspect**
+
+```java
+@Aspect
+@EnableAspectJAutoProxy		//这里多加了一个@EnableAspectJAutoProxy注解
+public class LoggerAspect {
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Before("execution(* com.xmcc.aop.PerformanceService.performanceDance(..))")
+    public void myBefore(){
+        logger.debug("前置通知");
+    }
+}
+```
+
+Aspect切面类中要多加入一个**@EnableAspectJAutoProxy**注解,因为**spring的aop是基于动态代理的** .
+
+##### 1.2.3基于纯XML的配置
+
+**具体业务类**
+
+```java
+//由于是纯XML配置,这里没有@Service注解
+public class PerformanceService {
+
+    public void performanceSingSong(){
+        System.out.println("唱一首歌");
+    }
+    public void performanceDance(){
+        System.out.println("跳一支舞");
+    }
+}
+```
+
+**Aspect切面类LoggerAspect**
+
+```java
+//这里也不需要任何注解
+public class LoggerAspect {
+    Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Before("execution(* com.xmcc.aop.PerformanceService.performanceDance(..))")
+    public void myBefore(){
+        logger.debug("前置通知");
+    }
+}
+```
+
+**XML配置**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+    <!--注册业务类-->
+    <bean id="performanceService" class="com.xmcc.aop.PerformanceService"></bean>
+    <!--注册切面类-->
+    <bean id="loggerAspect" class="com.xmcc.aop.LoggerAspect"></bean>
+    <!--配置aop切面-->
+    <aop:config>
+        <aop:aspect ref="loggerAspect">
+            <aop:before method="myBefore" pointcut="execution(* com.xmcc.aop.PerformanceService.performanceDance(..))"></aop:before>
+        </aop:aspect>
+    </aop:config>
+</beans>
+```
+
+**测试类**
+
+```java
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations="classpath:applicationContext.xml")
+public class SpringAopTest {
+    @Autowired
+    PerformanceService performanceService;
+
+    @Test
+    public void test(){
+        performanceService.performanceDance();
+    }
+}
+
+```
+
+
+
+#### 1.3 @PointCut注解
+
+当使用基于javaConfig或xml和注解混合开发的时候,可以使用**@Pointcut**注解声明那些使用率高的连接点为切点,这样就避免在切面中频繁使用**execution()切点表达式** .
+
+示例:
+
+```java
+@Aspect
+public class PerformanceAspect {
+    @Pointcut("execution(* com.xmcc.aop.Performance.dance(..))")	//1
+    public void performance(){
+    }
+    
+    @Before("performance()")		//2
+    public void myBefore(){
+        System.out.println("前置通知");
+    }
+}
+```
+
+**@Pointcut**注解中的**execution切点表达式**抽取需要重复使用的切点,**@Before("performance()")** 直接引用方法名即可**performance()**.
+
+注意:
+
+这里的**performance()**方法是空方法,实际上本来就应该是空方法,它只是提供了一个方法名让**@Pointcut注解**可以**依附**在上面而已.
 
 ### 二 关于依赖注入(装配与注入)
 
@@ -111,7 +328,7 @@ public class DataSourceConfig{
 }
 ```
 
-#### 
+
 
 * 在bean上使用了**@Profile**注解后,对应的profile被激活时,bean才被创建
 

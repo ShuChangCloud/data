@@ -155,7 +155,7 @@ public class PerformanceService {
 
 ```java
 @Aspect
-@EnableAspectJAutoProxy		//这里多加了一个@EnableAspectJAutoProxy注解
+//@EnableAspectJAutoProxy		
 public class LoggerAspect {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -167,7 +167,7 @@ public class LoggerAspect {
 }
 ```
 
-Aspect切面类中要多加入一个**@EnableAspectJAutoProxy**注解,因为**spring的aop是基于动态代理的** .
+由于xml配置文件中已经开启了aop自动代理,锁一切面类上就不必在使用**@EnableAspectJAutoProxy** 注解了.
 
 ##### 1.2.3基于纯XML的配置
 

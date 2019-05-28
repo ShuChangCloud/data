@@ -52,3 +52,7 @@ public class Student {
     }
 ```
 
+### 四.其他校验注解
+
+![](assets/va.png)
+

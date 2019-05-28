@@ -155,7 +155,7 @@ public class PerformanceService {
 
 ```java
 @Aspect
-//@EnableAspectJAutoProxy		
+//切面类必须声明为bean,这里使用xml配置了bean 所以不用注解声明了
 public class LoggerAspect {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());

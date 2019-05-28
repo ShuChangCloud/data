@@ -303,3 +303,142 @@ public class StudentController{
 #### 2.7 运行结果
 
 ![](assets/res.png)
+
+### 三.springMVC参数的日期类型转换
+
+#### 3.1 导入maven依赖
+
+```xml
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.8</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>2.9.8</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>2.9.8</version>
+    </dependency>
+```
+
+#### 3.2 pojo类
+
+```java
+package com.xmcc.pojo;
+
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Student extends JsonSerializer<Date> {
+
+    private String pass;
+
+    private String name;
+
+    private Date bir;
+
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "pass='" + pass + '\'' +
+                ", name='" + name + '\'' +
+                ", bir=" + bir +
+                '}';
+    }
+
+    public Student() {
+    }
+
+    @Override
+    public void serialize(Date date, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String s = sdf.format(date);
+        gen.writeString(s);
+    }
+
+    public Student(String pass, String name,Date bir) {
+        this.pass = pass;
+        this.name = name;
+        this.bir=bir;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @JsonSerialize(using = Student.class)
+    public Date getBir() {
+        return bir;
+    }
+
+    public void setBir(Date bir) {
+        this.bir = bir;
+    }
+
+}
+```
+
+pojo类要继承**JsonSerializer**抽象类,重写serialize()方法.
+
+#### 3.3 控制器方法
+
+```java
+ @RequestMapping("json")
+    @ResponseBody
+    public  Student getJson(@RequestBody  Student stu){
+        System.out.println(stu);
+        return stu;
+    }
+```
+
+控制器方法的参数必须使用**@RequestBody** 注解.
+
+#### 3.4 前端传过来的数据
+
+```javascript
+ $.ajax({
+               url:"/mvc02/stu/json",
+               contentType:"application/json",
+               dataType:"json",
+               data:'{"name":"zhangsna","pass":"lisi","bir":"1998-02-22"}',
+               type:"post",
+               success:function (data) {
+                   alert(data.pass+"***"+data.name+data.bir)
+               }
+           })
+```
+
+bir的值中,月份必须是两位,二月就是02,而不能只写一个2,否则出现400 bad request错误.
+
+```javascript
+ data:'{"name":"zhangsna","pass":"lisi","bir":"1998-02-22"}'
+```
+

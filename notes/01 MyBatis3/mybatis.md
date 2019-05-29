@@ -22,7 +22,7 @@ List<Account> selByIds(Integer[] ids);
 </select>
 ```
 
-注意**collection**属性的值是**array** 
+注意**collection**属性的值是**array** .
 
 * 第二种
 
@@ -42,7 +42,7 @@ List<Account> selByIds(List<Integer> ids);
 </select>
 ```
 
-注意**collection**属性的值是**list** 
+注意**collection**属性的值是**list** ,这里的**parameterType**可省略不写,要写的话必须是**list** .
 
 * 第三种
 
@@ -53,7 +53,7 @@ List<Account> selByIds(AccountParam para)
 相应的配置文件应该
 
 ```xml
-<select id="selByIds" resultType="account">
+<select id="selByIds" resultType="account"  parameterType="accountParam">
     select * from account
     where id in
     <foreach collection="ids" item="id" separator="," open="(" close=")">
@@ -62,11 +62,14 @@ List<Account> selByIds(AccountParam para)
 </select>
 ```
 
-前提是**AccountParam** 中必须封装了一个是容器的属性,可以是list或array,也可以是map
+前提是**AccountParam** 中必须封装了一个是容器的属性,可以是list或array,也可以是map.   
+
+ **parameterType** 也不能忘记写.
 
 ```java
 public class AccountParam{
     private List<Integer> ids;
+    //省略getter setter
 }
 ```
 

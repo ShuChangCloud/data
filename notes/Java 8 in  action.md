@@ -247,3 +247,197 @@ List<Integer> someNumbers = Arrays.asList(1, 2, 3, 4, 5);
 
 将流中所有元素反复结合起来操作，最后得到**一个结果**值
 
+##### 2.4.1 元素求和
+
+可以像下面这样对流中所有的元素求和：
+
+```java
+int sum = numbers.stream().reduce(0, (a, b) -> a + b);
+```
+
+reduce 接受两个参数：
+
+*  一个初始值，这里是0  
+*   一个 **BinaryOperator**<T> 来将两个元素结合起来产生一个新值，这里我们用的是lambda (a, b) -> a + b 。
+
+也很容易把所有的元素相乘，只需要将另一个Lambda： (a, b) -> a * b 传递给 reduce操作就可以了：
+
+```java
+int product = numbers.stream().reduce(1, (a, b) -> a * b);
+```
+
+
+
+**无初始值**
+
+reduce 还有一个重载的变体，它不接受初始值，但是会返回一个 **Optional** 对象：
+
+```java
+Optional<Integer> sum = numbers.stream().reduce((a, b) -> (a + b));
+```
+
+考虑流中没有任何元素的情况。 reduce 操作无法返回其和，因为它没有初始值。这就是为什么结果被包裹在一个 Optional 对象里，以表明和可能不存在。
+
+
+
+##### 2.4.2 最大值和最小值
+
+你可以像下面这样使用 reduce 来计算流中的最大值
+
+```java
+Optional<Integer> max = numbers.stream().reduce(Integer::max);
+```
+
+要计算最小值，你需要把 Integer.min 传给 reduce 来替换 Integer.max ：
+
+```java
+Optional<Integer> min = numbers.stream().reduce(Integer::min);
+```
+
+你当然也可以写成Lambda  (x, y) -> x < y ? x : y 而不是 **Integer::min** ，不过后者比较易读。
+
+
+
+
+
+**流操作：无状态和有状态** 
+
+> ​	在从集合生成流的时候把 Stream 换成 parallelStream 就可以实现并行。
+>
+> ​	诸如 map 或 filter 等操作会从输入流中获取每一个元素，并在输出流中得到0或1个结果。
+> 这些操作一般都是 无状态的：它们**没有内部状态**（假设用户提供的Lambda或方法引用没有内部可变态）。
+>
+> ​	但诸如 reduce 、 sum 、 max 等操作需要内部状态来累积结果。在上面的情况下，**内部状态很小**.
+>
+> ​	相反，诸如 sort 或 distinct 等操作一开始都和 filter 和 map 差不多——都是接受一个流，再生成一个流	（中间操作），但有一个关键的区别。从流中排序和删除重复项时都需要知道先前的历史。我们把这些操作叫作 **有状态操作**。
+
+
+
+#### 2.5 数值流
+
+##### 2.5.1 原始类型流特化
+
+**映射到数值流** 
+
+```java
+int calories = menu.stream()
+    .mapToInt(Dish::getCalories)	//映射流,将流转化为原始类型流.
+    .sum();
+```
+
+ **IntStream** 还支持其他的方便方法，如**max** 、 **min** 、 **average** 等
+
+**转换回对象流**
+
+```java
+IntStream intStream = menu.stream().mapToInt(Dish::getCalories);	//转换为原始流
+Stream<Integer> stream = intStream.boxed()	//转换回对象流
+```
+
+在需要将数值范围装箱成为一个一般流时， **boxed** 尤其有用。
+
+
+
+通过下图可以看出stream和原始类型流处在**同一个层级**上.
+
+![](assets/stream.png)
+
+
+
+##### 2.5.2 数值范围
+
+Java 8引入了两个可以用于 IntStream 和 LongStream 的静态方法，帮助生成这种范围：range 和 rangeClosed 
+
+```java
+IntStream evenNumbers = IntStream.rangeClosed(1, 100)	//生成流中的元素范围是[0,100]
+													.filter(n -> n % 2 == 0);
+```
+
+**rangeClosed左右都是闭区间 ,range 是不包含结束值的。**
+
+
+
+#### 2.6 构建流
+
+##### 2.6.1 由值创建流
+
+可以使用静态方法 **Stream.of** ，通过显式值创建一个流。它可以接受任意数量的参数。
+
+```java
+Stream<String> stream = Stream.of("Java 8 ", "Lambdas ", "In ", "Action");
+```
+
+你可以使用 empty 得到一个空流，如下所示：
+
+```java
+Stream<String> emptyStream = Stream.empty();
+```
+
+
+
+##### 2.6.2 由数组创建流
+
+可以使用静态方法 **Arrays.stream**  从数组创建一个流。它接受一个数组作为参数,这个数组可以是任意类型的.
+
+```java
+int [] numbers = {2, 3, 5, 7, 11, 13};	//注意这里的数组类型是int 而不是Intger
+IntStream stream = Arrays.stream(numbers);
+stream.sum();
+```
+
+
+
+##### 2.6.3 由文件生成流
+
+```java
+Stream<String> strLines = Files.lines(Paths.get("test.xml"),
+                                      Charset.defaultCharset());
+	strLines.flatMap(line -> Arrays.stream(line.split("")))
+    												.forEach(System.out::println);
+```
+
+
+
+##### 2.6.4 由函数生成流：创建无限流
+
+Stream API提供了两个静态方法来从函数生成流： Stream.iterate 和 Stream.generate 。
+
+**迭代**
+
+```java
+Stream.iterate(0, n -> n + 2)
+							.limit(10)
+							.forEach(System.out::println);
+```
+
+
+
+**生成**
+
+```java
+Stream.generate(Math::random)
+                            .limit(5)
+                            .forEach(System.out::println);
+```
+
+ generate 方法也可让你按需生成一个无限流。但 generate 不是依次对每个新生成的值应用函数的。它接受一个 **Supplier**<T> 类型的Lambda提供新的值。
+
+
+
+#### 2.7 小结
+
+流让你可以简洁地表达复杂的数据处理查询。此外，流可以透明地**并行化**。以下是你应从本章中学到的关键概念。
+
+*  Streams API可以表达复杂的数据处理查询。
+*  你可以使用 filter 、 distinct 、 skip 和 limit 对流做筛选和切片。
+*  你可以使用 map 和 flatMap 提取或转换流中的元素。
+* 你可以使用 findFirst 和 findAny 方法查找流中的元素。你可以用 allMatch 、noneMatch 和 anyMatch 方法让流匹配给定的谓词。
+*  这些方法都利用了短路：找到结果就立即停止计算；没有必要处理整个流。
+*  你可以利用 reduce 方法将流中所有的元素迭代合并成一个结果，例如求和或查找最大元素。
+* filter 和 map 等操作是无状态的，它们并不存储任何状态。 reduce 等操作要存储状态才能计算出一个值。sorted 和 distinct 等操作也要存储状态，因为它们需要把流中的所有元素缓存起来才能返回一个新的流。这种操作称为有状态操作。
+* 流有三种基本的原始类型特化： IntStream 、 DoubleStream 和 LongStream 。它们的操作也有相应的特化。
+*  流不仅可以从集合创建，也可从值、数组、文件以及 iterate 与 generate 等特定方法创建。
+* 无限流是没有固定大小的流。
+
+
+

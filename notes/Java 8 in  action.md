@@ -642,6 +642,8 @@ int totalCalories =
 int totalCalories = menu.stream().mapToInt(Dish::getCalories).sum();
 ```
 
+**reduce方法和reducing方法的但参数方法都是binaryOperator** .
+
 
 
 **根据情况选择最佳解决方案**
@@ -715,4 +717,50 @@ menu.stream().collect(groupingBy(
 
 
 ![](assets/n_group.png)
+
+这个二级分组的结果就是像下面这样的两级 Map ：
+
+```json
+{
+    MEAT={DIET=[chicken], NORMAL=[beef], FAT=[pork]},
+	FISH={DIET=[prawns], NORMAL=[salmon]},
+	OTHER={DIET=[rice, seasonal fruit], NORMAL=[french fries, pizza]}
+}
+```
+
+这里的外层 Map 的键就是第一级分类函数生成的值：“fish, meat, other”，而这个 Map 的值又是一个 Map ，键是二级分类函数生成的值：“normal, diet, fat”。
+
+
+
+##### 3.4.2 按子组收集数据
+
+我们看到可以把第二个 groupingBy 收集器传递给外层收集器来实现多级分组。但进一步说，传递给第一个 groupingBy 的第二个收集器可以是任何类型，而不一定是另一个 groupingBy 。
+
+例如，要数一数菜单中每类菜有多少个，可以传递 counting 收集器作为groupingBy 收集器的第二个参数：
+
+```java
+Map<Dish.Type, Long> typesCount = menu.stream().collect(groupingBy(Dish::getType, 
+                                                                   counting()));
+```
+
+其结果是下面的 Map ：
+
+```json
+{MEAT=3, FISH=2, OTHER=4}
+```
+
+还要注意，普通的单参数 groupingBy(f) （其中 f 是分类函数）实际上是 groupingBy(f,toList()) 的简便写法。
+
+再举一个例子，你可以把前面用于查找菜单中热量最高的菜肴的收集器改一改，按照菜的类型分类：
+
+```java
+Map<Dish.Type, Optional<Dish>> mostCaloricByType =
+                            menu.stream()
+                            .collect(groupingBy(Dish::getType,
+                            maxBy(comparingInt(Dish::getCalories))))
+```
+
+个分组的结果显然是一个 map ，以 Dish 的类型作为键，以包装了该类型中热量最高的 Dish的 Optional<Dish> 作为值.
+
+**注意** 这个 Map 中的值是 Optional .这不是好的结果.
 

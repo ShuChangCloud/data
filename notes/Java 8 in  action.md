@@ -441,3 +441,278 @@ Stream.generate(Math::random)
 
 
 
+### 三. 使用流收集数据
+
+#### 3.1  收集器简介
+
+##### 3.1.1 收集器用作高级归约
+
+最直接和最常用的收集器是 **toList** 静态方法 ，它会把流中所有的元素收集到一个 List 中：
+
+```java
+List<Transaction> transactions =
+								transactionStream.collect(Collectors.toList());
+```
+
+##### 3.1.2 预定义收集器
+
+我们主要探讨预定义收集器的功能，也就是那些可以从 Collectors类提供的工厂方法（例如 groupingBy ）创建的收集器。它们主要提供了三大功能：
+
+* 将流元素归约和汇总为一个值
+*  元素分组
+*  元素分区
+
+
+
+#### 3.2 归约和汇总
+
+collect方法的参数是**集合收集器**,但collect方法的返回值并不总是一个集合类型的数据.
+
+举一个简单的例子，利用 counting 工厂方法返回的收集器，数一数菜单里有多少种菜：
+
+```java
+long howManyDishes = menu.stream().collect(Collectors.counting());
+```
+
+这还可以写得更为直接：
+
+```java
+long howManyDishes = menu.stream().count();
+```
+
+##### 3.2.1 查找流中的最大值和最小值
+
+想要找出菜单中热量最高的菜。你可以使用两个收集器， Collectors.maxBy 和Collectors.minBy ，来计算流中的最大或最小值。
+
+这两个收集器接收一个 Comparator 参数来比较流中的元素。你可以创建一个 Comparator 来根据所含热量对菜肴进行比较，并把它传递给Collectors.maxBy ：
+
+```java
+Comparator<Dish> dishCaloriesComparator =Comparator.comparingInt(Dish::getCalories);
+Optional<Dish> mostCalorieDish =menu.stream()
+    .collect(maxBy(dishCaloriesComparator));
+```
+
+Optional<Dish> 是怎么回事? 因为流中可能不存在元素,自然就无法比较出最大或最小元素.
+
+##### 3.2.2 汇总
+
+Collectors 类专门为汇总提供了一个工厂方法： Collectors.summingInt 。
+
+它可接受一个把对象映射为求和所需 int 的函数，并返回一个收集器；该收集器在传递给普通的 collect 方法后即执行我们需要的汇总操作。举个例子来说，你可以这样求出菜单列表的总热量：
+
+```java
+int totalCalories = menu.stream().collect(summingInt(Disg::getCalories));
+```
+
+但汇总不仅仅是求和；还有 Collectors.averagingInt ，连同对应的 averagingLong 和averagingDouble 可以计算数值的平均数：
+
+```java
+double avgCalories =menu.stream().collect(averagingInt(Dish::getCalories));
+```
+
+你可以使用 summarizingInt 工厂方法返回的收集器。例如，通过一次 summarizing 操作你可以就数出菜单中元素的个数，并得到菜肴热量总和、平均值、最大值和最小值：
+
+```java
+IntSummaryStatistics menuStatistics =
+    menu.stream().collect(summarizingInt(Dish::getCalories));
+```
+
+这个收集器会把所有这些信息收集到一个叫作 IntSummaryStatistics 的类里，它提供了方便的取值（getter）方法来访问结果。
+
+```java
+ IntSummaryStatistics summary = 
+    	 dishlsit.stream().collect(summarizingInt(Dish::getCalories));
+        summary.getAverage();
+        summary.getCount();
+        summary.getMax();
+        summary.getMin();
+        summary.getSum();
+```
+
+同样，相应的 summarizingLong 和 summarizingDouble 工厂方法有相关的 LongSummary-Statistics 和 DoubleSummaryStatistics 类型，适用于收集的属性是原始类型 long 或double 的情况。
+
+##### 3.2.3 连接字符串
+
+joining 工厂方法返回的收集器会把对流中每一个对象应用 toString 方法得到的所有字符串连接成一个字符串。这意味着你把菜单中所有菜肴的名称连接起来，如下所示：
+
+```java
+String shortMenu = menu.stream().map(Dish::getName).collect(joining());
+```
+
+joining其中一个重载的方法声明,joining不接受字符串以外的.
+
+```java
+public static java.util.stream.Collector<CharSequence, ?, String> joining()
+```
+
+**joining** 在内部使用了 **StringBuilder** 来把生成的字符串逐个追加起来.
+
+如果 Dish 类有一个 toString 方法来返回菜肴的名称，那你无需用提取每一道菜名称的函数来对原流做映射就能够得到相同的结果：
+
+```java
+String shortMenu = menu.stream().collect(joining());
+```
+
+但该字符串的可读性并不好。幸好， joining 工厂方法有一个重载版本可以接受元素之间的
+分界符，这样你就可以得到一个逗号分隔的菜肴名称列表：
+
+```java
+ String collect = menu.stream().map(Dish::getName).collect(joining(","));
+```
+
+正如我们预期的那样，它会生成：
+
+pork, beef, chicken, french fries, rice, season fruit, pizza, prawns, salmon.
+
+
+
+##### 3.2.4 广义的归约汇总
+
+事实上，我们已经讨论的所有收集器，都是一个可以用 reducing 工厂方法定义的归约过程的特殊情况而已。
+
+例如，可以用 reducing 方法创建的收集器来计算你菜单的总热量，如下所示：
+
+```java
+int totalCalories = menu.stream().collect(reducing(0,
+                                                   Dish::getCalories,
+                                                   (i, j) -> i + j));
+```
+
+它需要三个参数:
+
+*  第一个参数是归约操作的起始值，也是流中没有元素时的返回值，所以很显然对于数值和而言 0 是一个合适的值。
+* 第二个参数Function函数，将菜肴转换成一个表示其所含热量的 int 
+* 第三个参数是一个 BinaryOperator ，将两个项目累积成一个同类型的值。这里它就是对两个 int 求和。
+
+**reducing函数的声明** ,可以看到BinaryOperator的参数类型和第一个参数identity一致.
+
+```java
+public static <T, U>
+Collector<T, ?, U> reducing(U identity,
+                            Function<? super T, ? extends U> mapper,
+                            BinaryOperator<U> op)
+```
+
+下面是两个函数式接口的声明
+
+**BinaryOperator**
+
+```java
+public interface BinaryOperator<T> extends BiFunction<T,T,T> 
+```
+
+**BiFunction**
+
+```java
+public interface BiFunction<T, U, R> 
+```
+
+
+
+同样，你可以使用下面这样单参数形式的 reducing 来找到热量最高的菜，如下所示：
+
+```java
+Optional<Dish> mostCalorieDish =
+menu.stream().collect(reducing(
+(d1, d2) -> d1.getCalories() > d2.getCalories() ? d1 : d2));
+```
+
+可以把单参数 reducing 工厂方法创建的收集器看作三参数方法的特殊情况，它把流中的第一个项目作为起点，把恒等函数（即一个函数仅仅是返回其输入参数）作为一个转换函数。这也意味着，要是把单参数 reducing 收集器传递给空流的 collect 方法，收集器就没有起点；它将因此而返回一个 Optional<Dish> 对象。
+
+**收集框架的灵活性：以不同的方法执行同样的操作**
+
+```java
+int totalCalories = menu.stream().collect(reducing(0,
+                                                Dish::getCalories,
+                                                Integer::sum));
+```
+
+还有另一种方法不使用收集器也能执行相同操作——将菜肴流映射为每一道菜的热量，然后用前一个版本中使用的方法引用来归约得到的流：
+
+```java
+int totalCalories =
+				menu.stream().map(Dish::getCalories).reduce(Integer::sum).get();
+```
+
+注意，就像流的任何单参数 reduce 操作一样， reduce(Integer::sum) 返回的不是 int而是 Optional<Integer>
+
+最后，更简洁的方法是把流映射到一个 IntStream ，然后调用 sum 方法，你也可以得到相同的结果：
+
+```java
+int totalCalories = menu.stream().mapToInt(Dish::getCalories).sum();
+```
+
+
+
+**根据情况选择最佳解决方案**
+
+ 函数式编程通常提供了多种方法来执行同一个操作.
+
+尽可能为手头的问题探索不同的解决方案，但在通用的方案里面，始终选择最专门化的一个。无论是从可读性还是性能上看，这一般都是最好的决定。
+
+
+
+#### 3.4 分组
+
+假设你要把菜单中的菜按照类型进行分类，有肉的放一组，有鱼的放一组，其他的都放另一组。用 Collectors.groupingBy 工厂方法返回的收集器就可以轻松地完成这项任务，如下所示：
+
+```java
+Map<Dish.Type, List<Dish>> dishesByType =
+						menu.stream().collect(groupingBy(Dish::getType));
+```
+
+其结果是下面的 Map ：
+
+```json
+{FISH=[prawns, salmon], OTHER=[french fries, rice, season fruit, pizza],
+MEAT=[pork, beef, chicken]}
+```
+
+这里，你给 groupingBy 方法传递了一个 Function （以方法引用的形式），它提取了流中每一道 Dish 的 Dish.Type 。我们把这个 Function 叫作**分类函数**，因为它用来把流中的元素分成不同的组。
+
+分组操作的结果是一个 Map ，把**分组函数返回的值作为映射的键**，把流中所有具有这个分类值的项目的**列表**作为对应的映射值。
+
+
+
+但是，分类函数不一定像方法引用那样可用，因为你想用以分类的条件可能比简单的属性访问器要复杂。
+
+例如，你可能想把热量不到400卡路里的菜划分为“低热量”（diet），热量400到700卡路里的菜划为“普通”（normal），高于700卡路里的划为“高热量”（fat）。
+
+```java
+public enum CaloricLevel { DIET, NORMAL, FAT }	//外部定义一个分组依据的枚举
+
+ Map<CaloricLevel, List<Dish>> listMap = menu.stream().collect(groupingBy(dish ->
+        {
+            if (dish.getCalories() >0 && dish.getCalories() < 500)
+                return CaloricLevel.DIET;
+            else if (dish.getCalories() > 500 && dish.getCalories() < 700) {
+                return CaloricLevel.NORMAL;
+            } else {
+                return CaloricLevel.FAT;
+            }
+
+        }));
+```
+
+
+
+##### 3.4.1 多级分组
+
+除了普通的分类函数之外，还可以接受 collector 类型的第二个参数。那么要进行二级分组的话，我们可以把一个内层 groupingBy 传递给外层 groupingBy ，并定义一个为流中项目分类的二级标:
+
+```java
+Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel =
+menu.stream().collect(groupingBy(
+    Dish::getType,
+        groupingBy(dish -> {
+        if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+        else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+        else return CaloricLevel.FAT;} )
+                                   )
+                      );
+```
+
+
+
+![](assets/n_group.png)
+

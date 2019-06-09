@@ -642,7 +642,7 @@ int totalCalories =
 int totalCalories = menu.stream().mapToInt(Dish::getCalories).sum();
 ```
 
-**reduce方法和reducing方法的但参数方法都是binaryOperator** .
+**reduce方法和reducing方法的单参数方法都是binaryOperator** .
 
 
 

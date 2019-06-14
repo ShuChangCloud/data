@@ -1,12 +1,6 @@
 
 
--  流是“从支持数据处理操作的源生成的一系列元素”。
--  流利用内部迭代：迭代通过 filter 、 map 、 sorted 等操作被抽象掉了。
--  流操作有两类：中间操作和终端操作。
--  filter 和 map 等中间操作会返回一个流，并可以链接在一起。可以用它们来设置一条流
-  水线，但并不会生成任何结果。
--  forEach 和 count 等终端操作会返回一个非流的值，并处理流水线以返回结果。
--  流中的元素是按需计算的。
+-  
 
 
 
@@ -42,6 +36,18 @@
 
 流的流水线背后的理念类似于构建器模式。构建器模式中有一个调用链用来设置一套配
 置（对流来说这就是一个中间操作链），接着是调用 built 方法（对流来说就是终端操作）。
+
+#### 小结
+
+- 流是“从支持数据处理操作的源生成的一系列元素”。
+- 流利用内部迭代：迭代通过 filter 、 map 、 sorted 等操作被抽象掉了。
+- 流操作有两类：中间操作和终端操作。
+- filter 和 map 等中间操作会返回一个流，并可以链接在一起。可以用它们来设置一条流
+  水线，但并不会生成任何结果。
+- forEach 和 count 等终端操作会返回一个非流的值，并处理流水线以返回结果。
+- 流中的元素是按需计算的。
+
+
 
 ### 二. 使用流
 
@@ -764,3 +770,121 @@ Map<Dish.Type, Optional<Dish>> mostCaloricByType =
 
 **注意** 这个 Map 中的值是 Optional .这不是好的结果.
 
+包装的 Optional 没什么用，所以你可能想要把它们去掉。要做到这一点，或者更一般地来说，把收集器返回的结果转换为另一种类型，你可以使用Collectors.collectingAndThen 工厂方法返回的收集器，如下所示
+
+```java
+Map<Dish.Type, Dish> mostCaloricByType =menu.stream()
+.collect(groupingBy(Dish::getType,
+					collectingAndThen(
+                        maxBy(comparingInt(Dish::getCalories)),
+                    Optional::get)));
+```
+
+**通过 groupingBy 工厂方法的第二个参数传递的收集器将会对分到同一组中的所有流元素执行进一步归约操作。**
+
+与 groupingBy 联合使用的其他收集器的例子
+
+````java
+Map<Dish.Type, Integer> totalCaloriesByType =
+                            menu.stream().collect(groupingBy(Dish::getType,
+                            summingInt(Dish::getCalories)));
+````
+
+
+
+然而常常和 groupingBy 联合使用的另一个收集器是 mapping 方法生成的,这个方法接受两个参数：一个函数对流中的元素做变换，另一个则将变换的结果对象收集起来。
+
+比方说你想要知道，对于每种类型的 Dish ，菜单中都有哪些 CaloricLevel 。我们可以把 groupingBy 和 mapping 收集器结合起来，如下所示：
+
+```java
+Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType =
+            menu.stream().collect(
+            groupingBy(Dish::getType, mapping(
+            dish -> { if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+            else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+            else return CaloricLevel.FAT; },
+            toSet() )));
+```
+
+方法抽取,重构后得到:
+
+```java
+  @Test
+  public void test3(){
+        Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType =
+                menu.stream().collect(
+                        groupingBy(Dish::getType, mapping(
+                                getDishCaloricLevelFunction(),	//重构抽取
+                                toSet() )));
+        System.out.println(caloricLevelsByType);
+  }
+
+
+ private Function<Dish, CaloricLevel> getDishCaloricLevelFunction() {
+        return dish -> { if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+        else if (dish.getCalories() >= 400&&dish.getCalories() <= 700) return 				CaloricLevel.NORMAL;
+        else return CaloricLevel.FAT; };
+ }
+```
+
+对于返回的 Set 是什么类型并没有任何保证。但通过使用 toCollection ，你就可以有更多的控制。例如，你可以给它传递一个构造函数引用来要求 HashSet ：
+
+```java
+Map<Dish.Type, Set<CaloricLevel>> caloricLevelsByType =
+            menu.stream().collect(
+            groupingBy(Dish::getType, mapping(
+                dish -> { if (dish.getCalories() <= 400) return CaloricLevel.DIET;
+                else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
+                else return CaloricLevel.FAT; },
+            toCollection(HashSet::new) )));
+```
+
+
+
+#### 3.5 分区
+
+分区是分组的特殊情况：由一个谓词（返回一个布尔值的函数）作为分类函数，它称分区函数。分区函数返回一布尔值，这意味着得到的分组 Map 的键类型是 Boolean ，于是它最多可以分为两组—— true 是一组， false 是一组。例如，如果你是素食者或是请了一位素食的朋友来共进晚餐，可能会想要把菜单按照素食和非素食分开：
+
+```java
+Map<Boolean, List<Dish>> partitionedMenu =menu.stream()
+			.collect(partitioningBy(Dish::isVegetarian));	//分区函数
+```
+
+你可以把分区看作分组一种特殊情况。 groupingBy 和partitioningBy 收集器之间的相似之处并不止于此；
+
+还可以按照和分组类似的方式进行多级分区。
+
+```java
+menu.stream().collect(partitioningBy(Dish::isVegetarian,
+              partitioningBy (d -> d.getCalories() > 500)));
+```
+
+这是一个有效的多级分区，产生以下二级 Map ：
+{ false={false=[chicken, prawns, salmon], true=[pork, beef]},
+true={false=[rice, season fruit], true=[french fries, pizza]}}
+
+```java
+menu.stream().collect(partitioningBy(Dish::isVegetarian,
+partitioningBy (Dish::getType)));
+```
+
+这无法编译，因为 partitioningBy 需要一个谓词，也就是返回一个布尔值的函数。方法引用 Dish::getType 不能用作谓词。
+
+```java
+menu.stream().collect(partitioningBy(Dish::isVegetarian,
+counting()));
+```
+
+ 它会计算每个分区中项目的数目，得到以下 Map ：{false=5, true=4}
+
+
+
+#### 3.6 小结
+
+以下是你应从本章中学到的关键概念。
+
+*  collect 是一个终端操作，它接受的参数是将流中元素累积到汇总结果的各种方式（称为收集器）。
+* 预定义收集器包括将流元素归约和汇总到一个值，例如计算最小值、最大值或平均值。
+* 预定义收集器可以用 groupingBy 对流中元素进行分组，或用 partitioningBy 进行分区。
+* 收集器可以高效地复合起来，进行多级分组、分区和归约。
+* 你可以实现 Collector 接口中定义的方法来开发你自己的收集器。

@@ -649,7 +649,7 @@ public class AmazonProperties {
 }
 ```
 
-有了加载 amazon.associateId 配置属性的 AmazonProperties 后，我们可以调整ReadingListController 如下所示，让它从注入的 AmazonProperties 中获取Amazon Associate ID。
+​	有了加载 amazon.associateId 配置属性的 AmazonProperties 后，我们可以调整ReadingListController 如下所示，让它从注入的 AmazonProperties 中获取Amazon Associate ID。
 
 ```java
 @Controller
@@ -686,6 +686,43 @@ public class ReadingListController {
 ```
 
 ReadingListController 不再直接加载配置属性，转而通过注入其中的 AmazonProperties Bean来获取所需的信息。
+
+​	在AmazonProperties类中你应该注意到了它使用了两个注解:@ConfigurationProperties注解和
+
+@Component注解.是的要使用@ConfigurationProperties将模型中的值注入到类中,该类就必须要由spring管理,
+
+因此必须使用@Component注解. 这里有一个可以替代的方案就是在AmazonProperties类上只加上@EnableConfigurationProperties注解.该注解表示把类交给容器管理同时启用@ConfigurationProperties.
+
+但注意@EnableConfigurationProperties的属性是class[ ]. 下面是一个例子:
+
+```java
+@ConfigurationProperties(prefix = "author")	//把容器中的配置属性绑定到该类上
+public class AuthorProperties {
+    private String name;
+    private String age;
+    //省略getter setter
+}
+```
+
+下面是引用该类的测试类
+
+```java
+@EnableConfigurationProperties(AuthorProperties.class)	//激活属性类
+public class SpringBoot02ConfigApplicationTests {
+    @Autowired
+    private AuthorProperties authorProperties;
+    @Test
+    public void test001() {
+        String age = authorProperties.getAge();	//从属性类得到值
+        System.out.println(age);
+    }
+}
+
+```
+
+​	可以看到AuthorProperties类上没有@Component，在我们需要的时候可以把@EnableConfigurationProperties和@Conditional注解连用，当满足某个条件的时候才将AuthorProperties类导入到容器，并激活。这样可以防止由于包扫描一开始就把各种配置都导入容器，使容器的内容变得臃肿。
+
+​	在IDEA里使用了@EnableConfigurationProperties注解，但 AuthorProperties类上没有加@Component可能会提示编译错误，但经测试后，实际上是可以运行的。
 
 ##### 使用 Profile 进行配置
 

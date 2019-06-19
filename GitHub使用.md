@@ -5,28 +5,43 @@
  * 仓库路径查询查询： git remote -v
  * 添加远程仓库  git remote add origin <你的项目地址> 
  * 删除指定的远程： git remote rm origin
- 
- 
+
+
 ### 本地初始化一个项目
 
  * git config --global user.name "你的名字或昵称"
  * git config --global user.email "你的邮箱"
  * 如果设置了全局user.name 和 user.email 就不用在这个新项目中设置了
- 
+
  
 
 ### 同步到本地仓库
  * 先查看工作修改后的状态 ：git status
  * git add <文件名>
  * git commit -m "此处添加描述"
- 
- 
+
+
 ### 同步到远程仓库
 
- * 关联远程仓库：git remote add origin + 远程仓库地址 
- * 推送到远程仓库：<br>
- 第一次推送：git push -u origin master <br>
- 后续推送直接使用：git push origin master <br>
+ * 关联远程仓库：如下:
+
+```bash
+git remote add origin git@github.com:ShuChangCloud/wx_pay.git
+```
+
+ * 推送到远程仓库,第一次推送：
+
+```bash
+git push -u origin master
+```
+
+ *  后续推送直接使用：
+
+```bash
+git push origin master
+```
+
+
 
 ### 取消本地仓库和远程仓库的关联
  * git remote rm origin

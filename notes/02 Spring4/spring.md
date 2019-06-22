@@ -469,3 +469,75 @@ SPEL: 形如#{ ...}
 
 ```
 
+
+
+#### 3.6 将bean注入容器中
+
+##### 3.6.1 通过xml注入
+
+```xml
+<bean>org.example.MyClazz</bean>
+```
+
+##### 3.6.2 通过@bean和@configuration注入
+
+```java
+@Configuration
+public class DataSourceConfiguration {
+	@Bean
+    public DruidDataSource druidDataSource() {
+        DruidDataSource dataSource = new DruidDataSource();
+        return dataSource;
+    }
+}
+```
+
+##### 3.6.3 通过@import注解在运行时动态注入
+
+Dog类:
+
+```java
+public class Dog { 
+}
+```
+
+Cat类:
+
+```java
+public class Cat {
+}
+```
+
+```
+@Configuration
+@Import(Cat.class)
+public class CatConfig {
+
+    @Autowired
+    private Cat cat ;
+
+    public void print(){
+        cat.run();
+    }
+ }
+```
+
+测试类中测试
+
+```java
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class SpringBootMyStartPomApplicationTests {
+
+    @Autowired
+    private CatConfig catConfig;
+
+    @Test
+    public void contextLoads() {
+        catConfig.print();
+    }
+}
+```
+
+##### 3.6.4 通过@importresource注解同理
+

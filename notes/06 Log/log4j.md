@@ -87,6 +87,25 @@ log4j.logger.druid.sql.ResultSet=warn,stdout
 
 
 
+简单的
+
+```properties
+log4j.rootLogger=info,stdout,log
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d [%-5p] %l %rms: %m%n
+log4j.appender.log=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.log.DatePattern='.'yyyy-MM-dd
+log4j.appender.log.File=D://debug.log
+log4j.appender.log.Encoding=UTF-8
+#log4j.appender.log.Threshold = INFO
+log4j.appender.log.layout=org.apache.log4j.PatternLayout
+log4j.appender.log.layout.ConversionPattern=%d [%-5p] (%c.%t): %m%n
+log4j.logger.com.xmcc.mapper=TRACE
+```
+
+
+
 ### 四.Java中使用
 
 ```java

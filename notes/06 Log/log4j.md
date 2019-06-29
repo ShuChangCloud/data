@@ -45,47 +45,34 @@
 ### 三.log4j.properties
 
 ```properties
-### set log levels ### 
-log4j.rootLogger = INFO , console , debug , error 
- 
-### console ### 
-log4j.appender.console = org.apache.log4j.ConsoleAppender 
-log4j.appender.console.Target = System.out 
-log4j.appender.console.layout = org.apache.log4j.PatternLayout 
-log4j.appender.console.layout.ConversionPattern = %-d{yyyy-MM-dd HH\:mm\:ss} [%p]-[%c] %m%n 
- 
-### log file ### 
-log4j.appender.debug = org.apache.log4j.DailyRollingFileAppender 
-log4j.appender.debug.File = ../logs/springmvc-demo.log 
-log4j.appender.debug.Append = true 
-log4j.appender.debug.Threshold = INFO 
-log4j.appender.debug.layout = org.apache.log4j.PatternLayout 
-log4j.appender.debug.layout.ConversionPattern = %-d{yyyy-MM-dd HH\:mm\:ss} [%p]-[%c] %m%n 
- 
-### exception ### 
-log4j.appender.error = org.apache.log4j.DailyRollingFileAppender 
-log4j.appender.error.File = ../logs/springmvc-demo_error.log 
-log4j.appender.error.Append = true 
-log4j.appender.error.Threshold = ERROR 
-log4j.appender.error.layout = org.apache.log4j.PatternLayout 
-log4j.appender.error.layout.ConversionPattern = %-d{yyyy-MM-dd HH\:mm\:ss} [%p]-[%c] %m%n 
- 
- 
-###需要声明，然后下方才可以使druid sql输出，否则会抛出log4j.error.key not found 
-log4j.appender.stdout=org.apache.log4j.ConsoleAppender 
-log4j.appender.stdout.Target=System.out 
-log4j.appender.stdout.layout=org.apache.log4j.PatternLayout 
-log4j.appender.stdout.layout.ConversionPattern=%d{ISO8601} %l %c%n%p: %m%n 
- 
-### druid sql ### 
-log4j.logger.druid.sql=warn,stdout 
-log4j.logger.druid.sql.DataSource=warn,stdout 
-log4j.logger.druid.sql.Connection=warn,stdout 
-log4j.logger.druid.sql.Statement=warn,stdout 
-log4j.logger.druid.sql.ResultSet=warn,stdout 
+log4j.rootLogger=INFO, console, file
+
+log4j.appender.console=org.apache.log4j.ConsoleAppender
+log4j.appender.console.layout=org.apache.log4j.PatternLayout
+log4j.appender.console.layout.ConversionPattern=%d %p [%c] - %m%n
+
+log4j.appender.file=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.file.File=logs/log.log
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.A3.MaxFileSize=1024KB
+log4j.appender.A3.MaxBackupIndex=10
+log4j.appender.file.layout.ConversionPattern=%d %p [%c] - %m%n
 ```
 
 
+
+日志配置相关说明：
+
+- `log4j.rootLogger`：根日志，配置了日志级别为 `INFO`，预定义了名称为 `console`、`file` 两种附加器 
+- `log4j.appender.console`：console 附加器，日志输出位置在控制台
+- `log4j.appender.console.layout`：console 附加器，采用匹配器布局模式
+- `log4j.appender.console.layout.ConversionPattern`：console 附加器，日志输出格式为：日期 日志级别 [类名] - 消息`换行符` 
+- `log4j.appender.file`：file 附加器，每天产生一个日志文件
+- `log4j.appender.file.File`：file 附加器，日志文件输出位置 `logs/log.log`
+- `log4j.appender.file.layout`：file 附加器，采用匹配器布局模式
+- `log4j.appender.A3.MaxFileSize`：日志文件最大值
+- `log4j.appender.A3.MaxBackupIndex`：最多纪录文件数
+- `log4j.appender.file.layout.ConversionPattern`：file 附加器，日志输出格式为：日期 日志级别 [类名] - 消息`换行符`
 
 简单的
 

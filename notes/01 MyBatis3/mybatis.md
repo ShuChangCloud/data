@@ -44,10 +44,10 @@ List<Account> selByIds(List<Integer> ids);
 
 注意**collection**属性的值是**list** ,这里的**parameterType**可省略不写,要写的话必须是**list** .
 
-* 第三种
+* 第三种 使用@Param注解(推荐)
 
 ```java
-List<Account> selByIds(AccountParam para)
+List<Account> selByIds(@Param("ids")List<Integer> ids)
 ```
 
 相应的配置文件应该
@@ -61,19 +61,6 @@ List<Account> selByIds(AccountParam para)
     </foreach>
 </select>
 ```
-
-前提是**AccountParam** 中必须封装了一个是容器的属性,可以是list或array,也可以是map.   
-
- **parameterType** 也不能忘记写.
-
-```java
-public class AccountParam{
-    private List<Integer> ids;
-    //省略getter setter
-}
-```
-
-这样mybatis才能自动注入.
 
 
 

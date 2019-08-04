@@ -888,10 +888,3 @@ counting()));
 * 预定义收集器可以用 groupingBy 对流中元素进行分组，或用 partitioningBy 进行分区。
 * 收集器可以高效地复合起来，进行多级分组、分区和归约。
 * 你可以实现 Collector 接口中定义的方法来开发你自己的收集器。
-
-
-
-### 最佳实践
-
-#### part1: Optional
-

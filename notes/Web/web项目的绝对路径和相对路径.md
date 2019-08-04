@@ -36,3 +36,4 @@ HTML中form表单的action属性的地址是相对于服务器根目录(http://1
   <font color="red">"../"代表上级目录</font>
 
   <font color="red">"../../"代表上级目录的上级目录</font>
+

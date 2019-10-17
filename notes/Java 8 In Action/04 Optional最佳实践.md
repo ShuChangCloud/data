@@ -2,11 +2,41 @@
 
 ## Optional是什么?
 
-Optional容器是java 8 新引入的对"null"类型数据建模的一种类型,可以简单的理解它是处理NullPointException的一套高效API
+`Optional`容器是Java 8 新引入的对`null`类型数据建模的一种类型,可以简单的理解它是处理NullPointException的一套高效API
+
+**使用Optional容器能做什么 ?**
+
+<font color="red">  去除代码中对 null 的检查</font>
+
+是的,如果你曾经写过以下这样的代码,而且已经受够了这样的夺命连环null检查. 
+
+```java
+String cityName = null;
+Person person = personMapper.selectByName("张三");
+if (person != null) {
+    City city = person.getCity();
+    if (city != null) {
+        cityName = city.getName();
+    }
+}
+```
+
+但是使用`Optional`,你可以用以下非常简洁的代码去替换上面的代码
+
+```java
+ Optional.ofNullable(personMapper.selectByName("张三"))
+        .map(Person::getCity)
+        .map(Person::getCityName);
+//你甚至可以把他们写成一行
+```
+
+**Optional 可以做的事情只有这么多吗? 绝不,如何 让 Optional 发光发热,下面会慢慢介绍.**
+
+
 
 ## Optional API
 
-Optional API分为两部分,先看第一部分
+`Optional `API分为两部分,先看第一部分
 
 从对象中生成Optional :
 

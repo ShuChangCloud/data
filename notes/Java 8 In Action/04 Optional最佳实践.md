@@ -36,56 +36,27 @@ if (person != null) {
 
 ## Optional API
 
-`Optional `API分为两部分,先看第一部分
 
-从对象中生成Optional :
-
-<table><tbody><tr><th><strong>S.N.</strong></th>
-			<th><strong>方法及说明</strong></th>
-		</tr><tr><td>1</td>
-			<td>static&lt;T&gt; Optional&lt;T&gt; empty()<br>
-			null包装成的Optional对象</td>
-		</tr><tr><td>2</td>
-			<td>static &lt;T&gt; Optional&lt;T&gt; of(T value)<br>
-			构造一个Optional对象，参数不能是null</td>
-		</tr><tr><td>3</td>
-			<td>static &lt;T&gt; Optional&lt;T&gt; ofNullable(T value)<br>
-			构造一个Optional对象，参数允许为null</td>
-		</tr></tbody></table>
 
 对Optional 容器中对象的处理:
 
-<table><tbody><tr><th><strong>S.N.</strong></th>
-			<th><strong>方法及说明</strong></th>
-		</tr><tr><td>1</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#isPresent" rel="nofollow" data-token="83ac1e37f35dfccf2ed25eb5335f7769">boolean isPresent()</a><br>
-			检查持有的value是否为null</td>
-		</tr><tr><td>2</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#ifPresent" rel="nofollow" data-token="eb81278e16f3d2f4e9a1d84ec69fab06">void ifPresent(Consumer&lt;? super T&gt; consumer)</a><br>
-			如果持有的value不为null，通过Consumer函数式接口，对持有的value做相应的操作，比如打印等void操作</td>
-		</tr><tr><td>3</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#orElse" rel="nofollow" data-token="232de29dacf6f355311085846f02f5bf">T orElse(T other)</a><br>
-			如果持有的Optional对象isPresent，则返回持有的value，否则返回orElse方法的参数，可用来设置默认值</td>
-		</tr><tr><td>4</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#orElseGet" rel="nofollow" data-token="ec1dfbda8792d757ad62934bb6ba712c">T orElseGet(Supplier&lt;? extends T&gt; other)</a><br>
-			如果持有的Optional对象isPresent，则返回持有的value，否则通过Supplier函数式接口取回一个对象作为默认值返回</td>
-		</tr><tr><td>5</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#orElseThrow" rel="nofollow" data-token="58a49965915fcf20651886bdcdea62d5">&lt;X extends Throwable&gt; T orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier) throws X</a><br>
-			如果持有的Optional对象isPresent，则返回持有的value，否则抛出一个异常</td>
-		</tr><tr><td>6</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#get" rel="nofollow" data-token="9580631f0a9ab16cccfc200c31d45975">T get()</a><br>
-			取回持有的value，如果value为null，则抛出异常NoSuchElementException</td>
-		</tr><tr><td>7</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#filter" rel="nofollow" data-token="dd0475b779399b848e8d92b7b3006ffe">Optional&lt;T&gt; filter(Predicate&lt;? super T&gt; predicate)</a><br>
-			通过Predicate函数式接口定义的规则测试value，如果函数式接口返回true，则返回原Optional对象，否则通过 empty()方法返回一个Optional对象，可用来对Optional进行过滤</td>
-		</tr><tr><td>8</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#map" rel="nofollow" data-token="c51f66a43a1a2f23140a57cfafbc83d1">Optional&lt;U&gt; map(Function&lt;? super T, ? extends U&gt; mapper)</a><br>
-			对value通过Function函数式接口定义的规则返回一个对象，然后将返回的对象包装成一个Optional对象返回</td>
-		</tr><tr><td>9</td>
-			<td><a href="http://lidol.top/2018/06/20/012/#flatMap" rel="nofollow" data-token="3edc89f29039f9f4a8a0f44f613a6755">Optional&lt;U&gt; flatMap(Function&lt;? super T, Optional&lt;U&gt;&gt; mapper)</a><br>
-			对value通过Function函数式接口定义的规则返回一个Optional对象，然后将返回的Optional对象返回</td>
-		</tr></tbody></table>
-
+| Modifier and Type        | Method and Description                                       |
+| :----------------------- | :----------------------------------------------------------- |
+| `static <T> Optional<T>` | `empty()`返回一个空的 `Optional `对象.                       |
+| `boolean`                | `equals(Object obj)`指示其他对象是否“等于”此可选对象。       |
+| `Optional<T>`            | `filter(Predicate<? super T> predicate)`如果存在一个值，并且该值与给定谓词匹配，则返回描述该值的“Optional”，否则返回空的“Optional”。 |
+| `<U> Optional<U>`        | `flatMap(Function<? super T,Optional<U>> mapper)`如果存在值，则对其应用提供的“optional”方向映射函数，返回该结果，否则返回空的“optional”。 |
+| `T`                      | `get()`如果此“可选”中存在值，则返回该值，否则抛出“NoSuchelementException”。 |
+| `int`                    | `hashCode()`返回当前值的哈希代码值（如果有），如果不存在值，则返回0（零）。 |
+| `void`                   | `ifPresent(Consumer<? super T> consumer)`如果存在值，则使用该值调用指定的消费者，否则不执行任何操作。 |
+| `boolean`                | `isPresent()`如果存在值，则返回“true”，否则返回“false”。     |
+| `<U> Optional<U>`        | `map(Function<? super T,? extends U> mapper)`如果存在值，则对其应用提供的映射函数，并且返回一个optional包装的结果值，否则不进行任何操作。 |
+| `static <T> Optional<T>` | `of(T value)`  返回该值的Optional包装类型,如果该值为空,则抛出NPE |
+| `static <T> Optional<T>` | `ofNullable(T value)`如果非空，则返回描述指定值的“Optional”，否则返回空的“Optional”。 |
+| `T`                      | `orElse(T other)`有则返回，无则返回“other”。                 |
+| `T`                      | `orElseGet(Supplier<? extends T> other)` 若存在则返回,否则由生产者生成一个指定对象 |
+| `<X extends Throwable>T` | `orElseThrow(Supplier<? extends X> exceptionSupplier)`存在则返回,否则由生产者返回一个指定异常 |
+| `String`                 | `toString()`返回此可选的适合调试的非空字符串表示形式。       |
 
 
 ## Optional 初步使用

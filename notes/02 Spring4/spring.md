@@ -193,6 +193,7 @@ public class PerformanceService {
 public class LoggerAspect {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Before("execution(* com.xmcc.aop.PerformanceService.performanceDance(..))")
     public void myBefore(){
         logger.debug("前置通知");
     }
@@ -271,14 +272,6 @@ public class PerformanceAspect {
 注意:
 
 这里的**performance()**方法是空方法,实际上本来就应该是空方法,它只是提供了一个方法名让**@Pointcut注解**可以**依附**在上面而已.
-
-
-
-#### 1.4 声明式事务失效的原因
-
-* 在service层捕获了异常
-* @transition注解定义在了接口上
-* 自调用问题
 
 ### 二 关于依赖注入(装配与注入)
 

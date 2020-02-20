@@ -273,6 +273,88 @@ public class PerformanceAspect {
 
 这里的**performance()**方法是空方法,实际上本来就应该是空方法,它只是提供了一个方法名让**@Pointcut注解**可以**依附**在上面而已.
 
+
+
+#### 1.4 @DeclareParents注解
+
+```java
+public @interface DeclareParents {
+
+    /**
+     * @return the target types expression
+     */
+    String value();
+
+    /**
+     * Optional class defining default implementation
+     * of interface members (equivalent to defining
+     * a set of interface member ITDs for the
+     * public methods of the interface).
+     * 
+     * @return define the default implementation of interface members (should always be specified)
+     */
+    Class defaultImpl() default DeclareParents.class;
+
+    // note - a default of "null" is not allowed,
+    // hence the strange default given above.
+}
+```
+
+![1582099495514](assets/1582099495514.png)
+
+使用时将被增强的类也就是value值的类强制转换成defaultImpl的接口类型.
+
+![1582101581444](assets/1582101581444.png)
+
+
+
+#### 1.5 当有多个切面时
+
+要想准确的控制切面执行顺序,可以使用@Order注解或Ordered接口
+
+```java
+@Aspect
+@Order(1)
+public class MyAspect1{
+    
+    .....
+}
+
+@Aspect
+@Order(2)
+public class MyAspect2{
+    
+    .....
+}
+
+@Aspect
+@Order(3)
+public class MyAspect3{
+    
+    .....
+}
+```
+
+各类通知执行的顺序是
+
+```cmd
+前置通知:MyAspect1,MyAspect2,MyAspect3
+后置通知和返回通知(after,afterreturnning):MyAspect3,MyAspect2,MyAspect1
+```
+
+
+
+#### 1.6小结
+
+* 各类通知执行顺序:before-- around-- after  -- afterreturnning 和afterthrowing只有一个会执行
+* around和target方法只有一个会执行,但是around中可以调用target方法)
+
+* **切面**定义了"**何时何地以及是什么**",而生成动态代理对象并且将切面和目标对象方法编织成约定流程的过程就是**织入**. 由于springAOP只提供方法级别的织入,所以也可以认为目标对象就是类中被增强的方法.
+
+面试题:你在哪些地方使用过AOP?
+
+声明式事务,声明式缓存等
+
 ### 二 关于依赖注入(装配与注入)
 
 #### 2.1装配方式

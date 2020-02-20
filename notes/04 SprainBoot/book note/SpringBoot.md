@@ -4,6 +4,8 @@
 
 **@ConfigurationProperties** 告诉springboot将配置文件里面值取出来关联到该类的属性上,前提是该类必须交给spring容器管理,所以同时需要**@Component** 注解配合使用
 
+**prefix的值加上pojo类中属性名组成全限定属性名到@PropertySource指定的文件中查找**
+
 * ```java
   //导入容器或配置文件中的属性到当前类中,常常和@PropertySource一起使用
   @ConfigurationProperties(prefix = "author")  
@@ -27,7 +29,9 @@
 
 
 
+@ImportResource 导入xml装配的bean到spring容器
 
+@PropertySource 导入外部配置
 
 ### 二 自动配置 AutoConfiguration
 

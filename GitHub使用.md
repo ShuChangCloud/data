@@ -48,3 +48,14 @@ git push origin master
 
 ### 克隆远程仓库到本地
  * git clone + 远程仓库地址 
+
+
+
+### 分支管理
+
+删除远程分支dev
+
+```shell
+git push origin --delete dev
+```
+

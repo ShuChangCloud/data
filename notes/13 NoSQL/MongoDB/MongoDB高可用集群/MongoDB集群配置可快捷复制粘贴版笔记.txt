@@ -1,0 +1,92 @@
+创建各种文件夹
+mkdir -p conf
+mkdir -p mongos/log
+mkdir -p config/data
+mkdir -p config/log
+mkdir -p shard1/data
+mkdir -p shard1/log
+mkdir -p shard2/data
+mkdir -p shard2/log
+mkdir -p shard3/data
+mkdir -p shard3/log
+
+配置环境变量
+C:\chan\mongodb-win32-x86_64-2008plus-ssl-4.0.12
+
+
+集群路由核心配置
+configdb = configs/172.18.140.34:21000,172.18.140.120:21000,172.18.140.111:21000
+
+删除服务 
+sc delete MongoDB_config
+sc delete MongoDB_shard1
+sc delete MongoDB_shard2
+sc delete MongoDB_shard3
+sc delete MongoDB_mongos
+
+在三台服务器上注册服务
+mongod -f   D:\mongodb-win32-x86_64-2008plus-ssl-4.0.12\conf\config.cfg  --install --serviceName "MongoDB_config"  
+
+mongod -f  D:\mongodb-win32-x86_64-2008plus-ssl-4.0.12\conf\shard1.cfg --install --serviceName "MongoDB_shard1" --serviceDisplayName "MongoDB_shard1" 
+
+mongod -f  D:\mongodb-win32-x86_64-2008plus-ssl-4.0.12\conf\shard2.cfg --install --serviceName "MongoDB_shard2"  --serviceDisplayName "MongoDB_shard2"
+
+mongod -f  D:\mongodb-win32-x86_64-2008plus-ssl-4.0.12\conf\shard3.cfg  --install --serviceName "MongoDB_shard3"  --serviceDisplayName "MongoDB_shard3"
+
+mongos -f D:\mongodb-win32-x86_64-2008plus-ssl-4.0.12\conf\mongos.cfg  --install --serviceName "MongoDB_mongos"  --serviceDisplayName "MongoDB_mongos"
+
+config = {
+    _id : "configs",
+    members : [
+    {_id : 0, host : "172.18.140.34:21000" },
+    {_id : 1, host : "172.18.140.120:21000" },
+    {_id : 2, host : "172.18.140.111:21000" }
+    ]
+}
+
+rs.initiate(config)
+
+
+config = {
+    _id : "shard1",
+     members : [
+         {_id : 0, host : "172.18.140.34:27001" },
+         {_id : 1, host : "172.18.140.120:27001" },
+         {_id : 2, host : "172.18.140.111:27001" , arbiterOnly: true }
+     ]
+ }
+ 
+ 
+rs.initiate(config)
+
+
+config = {
+    _id : "shard2",
+     members : [
+         {_id : 0, host : "172.18.140.34:27002"  , arbiterOnly: true },
+         {_id : 1, host : "172.18.140.120:27002" },
+         {_id : 2, host : "172.18.140.111:27002" }
+     ]
+ }
+
+rs.initiate(config)
+
+
+
+config = {
+    _id : "shard3",
+     members : [
+         {_id : 0, host : "172.18.140.34:27003" },
+         {_id : 1, host : "172.18.140.120:27003" , arbiterOnly: true},
+         {_id : 2, host : "172.18.140.111:27003" }
+     ]
+ }
+ 
+ 
+sh.addShard("shard1/172.18.140.34:27001,172.18.140.120:27001,172.18.140.111:27001");
+sh.addShard("shard2/172.18.140.34:27002,172.18.140.120:27002,172.18.140.111:27002");
+sh.addShard("shard3/172.18.140.34:27003,172.18.140.120:27003,172.18.140.111:27003");
+
+
+###查看数据分片状况
+db.table1.getShardDistribution()

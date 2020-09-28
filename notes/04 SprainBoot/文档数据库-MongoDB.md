@@ -296,3 +296,63 @@ public User find(Long id,String userName){
 当然如果要实现更灵活的查询,可能@query注解可能也要乏力了。这个时候可以借用**Criteria类(准则)**，它能实现更加复杂的查询。
 
 最后可以在springboot的启动类上加上@EnableMongoRepositories注解，可以更精确的配置其它信息，不加也没关系，它和sql的jpa一样,不加该注解也可以，但是想更加精确的配置就可以使用它。
+
+## 1.4 MongoDB文件上传下载删除
+
+
+
+### 1.4.1 文件上传
+
+```java
+@GetMapping("upload")
+public CommonResult upload() {
+BufferedInputStream is = FileUtil.getInputStream("C:\\Users\\Chang\\Desktop\\vpn.txt");
+    ObjectId objectId = gridFsTemplate.store(is, "vpn.txt");
+    return CommonResult.success(objectId.toString());
+}
+```
+
+
+
+### 1.4.2 文件下载
+
+```java
+
+    @GetMapping("downloadFile")
+    public void download(HttpServletResponse response) throws IOException {
+        final String FILE_ID = "1ff3afm4k";
+        Query query = Query.query(Criteria.where("_id").is(FILE_ID));
+        GridFSFile fsFile = gridFsTemplate.findOne(query);
+        if (fsFile == null) {
+            return;
+        }
+        GridFsResource resource = gridFsTemplate.getResource(fsFile);
+        InputStream is = resource.getInputStream();
+        ServletOutputStream os = response.getOutputStream();
+        //response.setContentType(fsFile.getContentType());
+        response.setHeader("Content-Disposition", StrUtil.format("attachment;filename={}", fsFile.getFilename()));
+        IoUtil.copy(is, os, IoUtil.DEFAULT_BUFFER_SIZE);
+        IoUtil.close(is);
+        IoUtil.close(os);
+    }
+```
+
+
+
+###  1.4.3 文件删除
+
+```java
+@GetMapping("remove")
+public CommonResult remove() {
+    final String FILE_ID = "5f2d1706d1099769b9040c46";
+    Query query = Query.query(Criteria.where("_id").is(FILE_ID));
+    // 查询单个文件是否存在
+    GridFSFile fsFile = gridFsTemplate.findOne(query);
+    if (fsFile == null) {
+        return CommonResult.failed("要删除的文件不存在");
+    }
+    gridFsTemplate.delete(query);
+    return CommonResult.success("删除文件成功");
+}
+```
+

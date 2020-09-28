@@ -1,0 +1,23 @@
+
+F:\OracleDataBase\product\11.2.0\dbhome_1\RDBMS\ADMIN\utlpwdmg.sql
+
+
+
+ 1.FAILED_LOGIN_ATTEMPTS: 用户在登录尝试失败n次后被锁定。
+ 
+   2.PASSWORD_LOCK_TIME: 登录尝试失败达到指定次数，用户锁定时长，以“Day”为单位。
+ 
+   3.PASSWORD_LIFE_TIME: 用户口令的生命周期。
+ 
+   4.PASSWORD_GRACE_TIME: 表示用户口令使用时间超过其生命周期后，可以延续使用的天数，并且可延续时间内登录会有相应口令即将过期的提示。
+ 
+   5.PASSWORD_REUSE_TIME: 指定了口令不能重用前的天数。
+ 
+   6.PASSWORD_REUSE_MAX: 在达到PASSWORD_REUSE_TIME指定时间后，要再次使用同一口令前必须改变的次数。
+ 
+   如：PASSWORD_REUSE_TIME=30，PASSWORD_REUSE_MAX=10，用户可以在30天以后重用该口令，要求口令必须被改变超过10次。
+ 
+   7.PASSWORD_VERIFY_FUNCTION: Oracle允许将复杂的PL/SQL密码验证脚本做为参数传递给PASSWORD_VERIFY_FUNCTION。并且其自己提供了一个默认的脚本，但是用户可以创建自己的验证规则或使用第三方软件验证。
+ 
+   8.Password Verify Function：
+ 

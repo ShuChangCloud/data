@@ -1,5 +1,19 @@
 # GitHub的使用
 
+
+
+### 概念
+
+工作区 workspace  看到的实际文件或实际内容
+
+暂存区index/stage  对想要跟踪变化的文件做索引或标记。这样就能跟踪这个文件的历史版本
+
+本地仓库 repository 某次提交的快照。可根据版本号回退或恢复到某次提交。
+
+远程仓库 remote repository
+
+
+
 ### 常用命令
 
  * 仓库路径查询查询： git remote -v

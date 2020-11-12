@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/configclient7879/configclient7879.iml" filepath="$PROJECT_DIR$/configclient7879/configclient7879.iml" />
+      <module fileurl="file://$PROJECT_DIR$/configserver7878/configserver7878.iml" filepath="$PROJECT_DIR$/configserver7878/configserver7878.iml" />
+      <module fileurl="file://$PROJECT_DIR$/consulclient8889/consulclient8889.iml" filepath="$PROJECT_DIR$/consulclient8889/consulclient8889.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eurekaclient8888/eurekaclient8888.iml" filepath="$PROJECT_DIR$/eurekaclient8888/eurekaclient8888.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eurekaserver8761/eurekaserver8761.iml" filepath="$PROJECT_DIR$/eurekaserver8761/eurekaserver8761.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway8989/gateway8989.iml" filepath="$PROJECT_DIR$/gateway8989/gateway8989.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hellospringcloud/hellospringcloud.iml" filepath="$PROJECT_DIR$/hellospringcloud/hellospringcloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hystrixdashboard9990/hystrixdashboard9990.iml" filepath="$PROJECT_DIR$/hystrixdashboard9990/hystrixdashboard9990.iml" />
+      <module fileurl="file://$PROJECT_DIR$/products9998/products9998.iml" filepath="$PROJECT_DIR$/products9998/products9998.iml" />
+      <module fileurl="file://$PROJECT_DIR$/users9999/users9999.iml" filepath="$PROJECT_DIR$/users9999/users9999.iml" />
+    </modules>
+  </component>
+</project>

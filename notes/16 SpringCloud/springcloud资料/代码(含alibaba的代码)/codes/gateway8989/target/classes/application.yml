@@ -1,0 +1,44 @@
+server:
+  port: 8989
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      port: 8500
+      host: localhost
+      discovery:
+        service-name: ${spring.application.name}
+    gateway:
+      routes:
+        - id: user_route
+          #uri: http://localhost:9999/
+          uri: lb://users         # lb: 使用负载均衡策略   users代表注册中心的具体服务名
+          predicates:
+            - Path=/feign/**
+
+        - id: product_route
+          #uri: http://localhost:9998/
+          uri: lb://products     # lb: 使用负载均衡策略   products代表注册中心的具体服务名
+          predicates:
+            - Path=/product/**
+            #- After=2020-07-30T09:45:49.078+08:00[Asia/Shanghai]
+            #- Before=2020-07-30T09:47:49.078+08:00[Asia/Shanghai]
+            #- Between=2020-07-30T09:47:49.078+08:00[Asia/Shanghai],2020-07-30T09:50:49.078+08:00[Asia/Shanghai]
+            #- Cookie=username,chenyn
+            #- Cookie=username,[A-Za-z0-9]+
+            #- Header=X-Request-Id, \d+
+          #filters:
+            #- AddRequestParameter=id,34
+            #- AddResponseHeader=username,chenyn
+
+      discovery:
+        locator:
+          enabled: true   #开启根据服务名动态获取路由地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"   #暴露路由规则web端点  /actuator/gateway/routes

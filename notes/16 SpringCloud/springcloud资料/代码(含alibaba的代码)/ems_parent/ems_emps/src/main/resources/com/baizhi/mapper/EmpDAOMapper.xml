@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.EmpDAO">
+
+
+
+    <select id="findAll" resultType="Emp">
+        select
+          id,name,path,salary,age
+        from t_emp
+    </select>
+
+
+    <insert id="save" parameterType="Emp" useGeneratedKeys="true" keyProperty="id">
+        insert into t_emp values (#{id},#{name},#{path},#{salary},#{age})
+    </insert>
+
+
+</mapper>

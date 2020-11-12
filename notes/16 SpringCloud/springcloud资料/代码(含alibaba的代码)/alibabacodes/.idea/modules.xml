@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/configclient9066/configclient9066.iml" filepath="$PROJECT_DIR$/configclient9066/configclient9066.iml" />
+      <module fileurl="file://$PROJECT_DIR$/helloalibabacloud/helloalibabacloud.iml" filepath="$PROJECT_DIR$/helloalibabacloud/helloalibabacloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nacosclient8789/nacosclient8789.iml" filepath="$PROJECT_DIR$/nacosclient8789/nacosclient8789.iml" />
+      <module fileurl="file://$PROJECT_DIR$/products9098/products9098.iml" filepath="$PROJECT_DIR$/products9098/products9098.iml" />
+      <module fileurl="file://$PROJECT_DIR$/users9099/users9099.iml" filepath="$PROJECT_DIR$/users9099/users9099.iml" />
+    </modules>
+  </component>
+</project>

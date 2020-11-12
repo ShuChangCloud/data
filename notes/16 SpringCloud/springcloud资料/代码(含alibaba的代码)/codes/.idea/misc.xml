@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/hellospringcloud/pom.xml" />
+        <option value="$PROJECT_DIR$/eurekaserver8761/pom.xml" />
+        <option value="$PROJECT_DIR$/eurekaclient8888/pom.xml" />
+        <option value="$PROJECT_DIR$/aaaa/pom.xml" />
+        <option value="$PROJECT_DIR$/consulclient8889/pom.xml" />
+        <option value="$PROJECT_DIR$/users9999/pom.xml" />
+        <option value="$PROJECT_DIR$/products9998/pom.xml" />
+        <option value="$PROJECT_DIR$/hystrixdashboard9990/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway8500/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway8989/pom.xml" />
+        <option value="$PROJECT_DIR$/configserver7878/pom.xml" />
+        <option value="$PROJECT_DIR$/configclient7879/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectRootManager">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

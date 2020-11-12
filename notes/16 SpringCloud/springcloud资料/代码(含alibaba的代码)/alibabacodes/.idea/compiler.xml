@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="configclient9066" />
+        <module name="helloalibabacloud" />
+        <module name="nacosclient8789" />
+        <module name="products9098" />
+        <module name="users9099" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="aa9090" target="1.8" />
+      <module name="bb" target="1.8" />
+      <module name="bb9091" target="1.8" />
+      <module name="configclient9066" target="1.8" />
+      <module name="helloalibabacloud" target="1.8" />
+      <module name="nacosclient8789" target="1.8" />
+      <module name="products9098" target="1.8" />
+      <module name="users9099" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aa9090" options="-parameters" />
+      <module name="bb" options="-parameters" />
+      <module name="bb9091" options="-parameters" />
+      <module name="configclient9066" options="-parameters" />
+      <module name="helloalibabacloud" options="-parameters" />
+      <module name="nacosclient8789" options="-parameters" />
+      <module name="products9098" options="-parameters" />
+      <module name="users9099" options="-parameters" />
+    </option>
+  </component>
+</project>

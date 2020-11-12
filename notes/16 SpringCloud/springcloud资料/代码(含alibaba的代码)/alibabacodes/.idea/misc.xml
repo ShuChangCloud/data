@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/helloalibabacloud/pom.xml" />
+        <option value="$PROJECT_DIR$/nacosclient8789/pom.xml" />
+        <option value="$PROJECT_DIR$/users9099/pom.xml" />
+        <option value="$PROJECT_DIR$/products9098/pom.xml" />
+        <option value="$PROJECT_DIR$/configclient9066/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

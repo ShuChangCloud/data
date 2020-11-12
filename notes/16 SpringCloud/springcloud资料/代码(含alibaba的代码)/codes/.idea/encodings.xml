@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$/configclient7879" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/configserver7878" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/consulclient8889" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eurekaclient8888" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/eurekaserver8761" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway8500" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway8989" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hellospringcloud" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/hystrixdashboard9990" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/products9998" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/users9999" charset="UTF-8" />
+  </component>
+</project>
